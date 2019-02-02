@@ -1,70 +1,90 @@
 #include "list.h"
 
-//O(1)
-arrayList::arrayList()
+template <class x>
+ulist<x> :: ulist(int max)
 {
-  //initializes default length
-  length = 0;
+   length = 0;
+   this->max = max;
+   info = new x [max]; //dynamic array
 }
 
-//O(1)
-void arrayList::makeEmpty()
+template <class x>
+ulist<x> :: ~ulist()
 {
-  //makes it "empty", by starting from beginning
-  length = 0;
+   delete [] info;
 }
 
-//O(1)
-bool arrayList::isFull() const
+template <class x>
+void ulist<x> :: makeEmpty()
 {
-  //if length is 100 return true else return false
-  return (length == 100 ? 1 : 0);
+   length = 0;
 }
 
-//O(1)
-int arrayList::getLength()
+template <class x>
+bool ulist<x> :: isFull() const
 {
-  return length;
+   return length == max;
 }
 
-//O(1)
-void arrayList::insertItem(int item)
+template <class x>
+bool ulist<x> :: isEmpty() const
 {
-
-  if(isFull())
-  {
-    return;
-  }
-
-  //item will be inserted in the array index based on variable length
-  data[length] = item;
-  length++;
-
+   return length == 0;
 }
 
-//O(n)
-void arrayList::deleteItem(int item)
+template <class x>
+int ulist<x> :: getLength() const
 {
-  for(int i = 0 ; i < 100 ; i++)
+   return length;
+}
+
+template <class x>
+void ulist<x> :: insertItem (x item)
+{
+   if(!isFull())
+   {
+      info[length] = item;
+      length++;
+   }
+   else
+   cout << "\n\n LIST IS FULL \n\n";
+}
+
+template <class x>
+void ulist<x> :: deleteItem(x item)
+{
+   for(int i = 0 ; i < length ; i++)
   {
     //found item
-    if(data[i] == item)
+    if(info[i] == item)
     {
       //because when insert item length prepares for next index thus last value inserted is in length-1
-      data[i] = data[length-1];
-
-      length--;
+      info[i] = info[--length];
     }
   }
 }
 
-//O(n)
-void arrayList::show()
+template <class x>
+bool ulist<x> :: searchItem(x item)
 {
+   bool found = false;
 
-  //only shows data inserted by user
-  for(int i = 0 ; i < length ; i++)
+   for(int i = 0 ; i < length ; i++)
   {
-    cout << data[i] << endl;
+     //found item
+     if(info[i] == item)
+     found = true;
+  }
+
+  return found;
+}
+
+template <class x>
+void ulist<x> :: printList()
+{
+   cout << "\nThe LIST \n" ;
+   for(int i = 0 ; i < length ; i++)
+  {
+     cout << info[i] << endl;
   }
 }
