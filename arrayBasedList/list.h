@@ -4,31 +4,24 @@
 #include <iostream>
 using namespace std;
 
-class arrayList
-{
+template<class x>
+class ulist{
 private:
-
-  int length;
-  int data[100];
+   int length, max;
+   x *info; //ptr
 
 public:
-  //constructor
-  arrayList();
-
-  //to make list empty
-  void makeEmpty();
-
-  //to check if list is full
-  bool isFull() const;
-
-  //show how many elements are inside collection
-  int getLength();
-
-  //show elements in list
-  void show();
-
-  void insertItem(int);
-  void deleteItem(int);
+   ulist(int);
+   ulist(const ulist<x> & other); //copy constructor
+   ~ulist(); //destructor
+   void makeEmpty();
+   bool isFull() const;
+   bool isEmpty() const;
+   int getLength() const;
+   void insertItem( x item);
+   void deleteItem( x item);
+   bool searchItem( x item);
+   void printList();
 
 };
 
