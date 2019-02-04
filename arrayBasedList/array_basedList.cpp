@@ -21,13 +21,19 @@ int main()
   cout << "Enter max amount" << endl;
   cin >> max;
 
-  ulist <int> l1(max);
+  ulist <int> list_1(max);
 
-  startMenu(l1);
+  startMenu(list_1);
+  
+  ulist<int> list_2(max);
+  
+  list_2 = list_1;
+  list_2.printList();
+  
 
 }
 
-void startMenu(ulist <int> &l2)
+void startMenu(ulist <int> &list_1)
 {
    int option = 0;
 
@@ -40,18 +46,18 @@ void startMenu(ulist <int> &l2)
       {
 
          case 1:
-                insertItem(l2);
+                insertItem(list_1);
                 break;
          case 2:
-                deleteItem(l2);
+                deleteItem(list_1);
                 break;
 
          case 3:
-                searchItem(l2);
+                searchItem(list_1);
                 break;
 
          case 4:
-                printList(l2);
+                printList(list_1);
                 break;
          default:
                 break;
@@ -60,40 +66,40 @@ void startMenu(ulist <int> &l2)
    }
 }
 
-void insertItem(ulist <int> &l2)
+void insertItem(ulist <int> &list_1)
 {
 
    int item;
    cout << "\nInsert number : " << endl;
    cin >> item;
 
-   l2.insertItem(item);
+   list_1.insertItem(item);
 
 }
 
-void deleteItem(ulist <int> &l2)
+void deleteItem(ulist <int> &list_1)
 {
    int item;
    cout << "\nInsert number : " << endl;
    cin >> item;
 
-   l2.deleteItem(item);
+   list_1.deleteItem(item);
 }
 
-void searchItem(ulist <int> &l2)
+void searchItem(ulist <int> &list_1)
 {
    int item;
 
    cout << "\nInsert number: " << endl;
    cin >> item;
 
-   bool found = l2.searchItem(item);
+   bool found = list_1.searchItem(item);
 
    (found) ? cout << "\n" << item << " exists on the list\n" : cout << "\n" << item << " does not exist\n";
 }
 
-void printList(ulist <int> &l2)
+void printList(ulist <int> &list_1)
 {
    cout << endl;
-   l2.printList();
+   list_1.printList();
 }
