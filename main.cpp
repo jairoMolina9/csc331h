@@ -1,7 +1,7 @@
 /*
   Jairo Molina
   ArrayBased list
-  2019
+  Spring 2019
 */
 
 #include <time.h>

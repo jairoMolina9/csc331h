@@ -1,7 +1,7 @@
 /*
   Jairo Molina
   ArrayBased list
-  2019
+  Fall 2019
 */
 
 #include <time.h>
@@ -24,12 +24,12 @@ int main()
   ulist <int> list_1(max);
 
   startMenu(list_1);
-  
+
   ulist<int> list_2(max);
-  
+
   list_2 = list_1;
   list_2.printList();
-  
+
 
 }
 
