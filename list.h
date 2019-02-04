@@ -22,6 +22,7 @@ public:
    void deleteItem( x item);
    bool searchItem( x item);
    void printList();
+   ulist<x>& operator=(ulist<x>&);
 
 };
 
