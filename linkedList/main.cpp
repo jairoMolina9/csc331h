@@ -1,5 +1,6 @@
+//Example of linked list
+//
 //Jairo Molina
-//part1
 
 #include <iostream>
 
