@@ -1,165 +1,112 @@
 #include "linkedList.h"
 
-template <class dataType>
-List<dataType> :: List()
-{
-   this->data = 0;
-   this->head = nullptr;
-
+template <class type>
+List<type>::List() {
+  head = nullptr;
+  tail = nullptr;
+  length = 0;
 }
 
-template <class dataType>
-void List<dataType> :: insertNode(dataType data)
-{
-   node<dataType> *new_head;
-   new_head = new node<dataType>;
-
-   new_head->data = data;
-   new_head->next = head;
-   head = new_head;
-
-}
-
-template <class dataType>
-void List<dataType> :: deleteItem(dataType data)
-{
-
-   node<dataType> *local_head = this->head;
-
-   if(head->data == data)
-   {
-      head = head->next;
-      delete local_head;
-
-      return;
-   }
-
-   while(local_head!=nullptr)
-   {
-      if(local_head->data == data)
-      {
-         node<dataType> *temp = local_head->next;
-         local_head = temp->next;
-         delete temp;
-
-         return;
-      }
-      else
-         local_head = local_head->next;
-   }
-
-   /*
-   while(p->next != nullptr && p->next->data != data)
-   {
-   p = p->next;
-   if(p->next == nullptr )
-   {
-   cout << "item not found";
-}
-else{
-node<dataType> *t = p->next;
-p->next = t->next;
-delete t;
-length--;
-}
-   }
-   */
-
-
-}
-
-//overloading =
-/*
-if(this!=&other)
-{
-makeEmpty();
-copy(other);
-}
-
-*/
-
-
-
-//copy constructor
-template <class dataType>
-List<dataType> :: List(const List<dataType>& other)
+template <class type>
+void List<type>::copyAll(const List &other)
 {
    if(other.length == 0)
    {
-      head = nullptr;
-      length =0;
-   }
-   else{
-      node<dataType> *s = other.first;
-      length = other.length;
-
-      head = new node<dataType>;
-      head->info = s->info;
-
-      node<dataType> *t = head;
-
-      while(s->next != nullptr)
+      head = tail = nullptr;
+      length = 0;
+   } else {
+      head = new Node<type>;
+      head = other.head;
+      Node<type> *other_walker = other.head->next;
+      while(other_walker != nullptr)
       {
-         t->next = new node<dataType>;
-         t = t->next;
-
-         s = s->next;
-         t->info = s->info;
+         head = other_walker;
+         other_walker = other_walker->next;
       }
-
+      tail = other_walker;
    }
 }
 
-template <class dataType>
-List<dataType> :: ~List()
+template <class type>
+List<type>::List(const List<type> &other) {
+   copyAll(other);
+}
+
+template <class type>
+List<type>& List<type>::operator=(const List<type> &other)
 {
-   node<dataType> *local_head;
-   while(head!=nullptr)
+   if(head == other.head)
    {
-      local_head = head;
+      cerr << "They are the same" << endl;
+   } else {
+      removeAll();
+      copyAll(other);
+   }
+   return *this;
+}
+
+template <class type> List<type>::~List() {
+  removeAll();
+  cout << "Object List Deleted" << endl;
+}
+
+template <class type>
+void List<type>::removeAll()
+{
+   Node<type>* walker;
+
+   while(head != nullptr)
+   {
+      walker = head;
       head = head->next;
-      delete local_head;
-
+      delete walker;
    }
+   tail = nullptr;
+   length = 0;
 }
 
-template <class dataType>
-void List<dataType> :: printList()
-{
-   //create a local head pointing at the head address
-   node<dataType> *local_head = this->head;
+template <class type>
+void List<type>::insert_front(type info) {
+  if (isEmpty()) {
+    head = new Node<type>;
+    head->back = nullptr;
+    head->next = nullptr;
+    head->value = info;
+    tail = head;
+    length++;
+  } else {
+    Node<type> *new_Node = new Node<type>; // creates new node
+    new_Node->value = info;                // stores user info into node
+    new_Node->back = nullptr;              // sets new head back pointer to null
+    new_Node->next = head; // sets new head next pointer to current head
+    head->back = new_Node; // sets current head back pointer to new head
 
-   int i = 1;
-   while(local_head){
+    head = new_Node; // sets current head to new head
+    length++;
+  }
 
-      //print out data
-      cout << i << ": " << local_head->data << endl;
-
-      //local pointer address now points at next node
-      local_head = local_head->next;
-      i++;
-   }
+  cout << "Value inserted into Node[1]" << endl;
 }
 
-template <class dataType>
-bool List<dataType> :: search(dataType data)
-{
-   //create a local head pointing at the head address
-   node<dataType> *local_head = this->head;
+template <class type>
+bool List<type>::isEmpty(){
+   return (length == 0);
+}
 
-   bool exists = false;
+template <class type>
+void List<type>::printEdges() {
+  cout << "The HEAD value" << endl;
+  cout << "[ " << head->value << " ]" << endl;
+  cout << "\n";
+  cout << "The TAIL value" << endl;
+  cout << "[ " << tail->value << " ]" << endl;
+}
 
-   //must follow this because if pointer is null then there
-   //cant be data
-   // while(local_head && p->data <= item)
-   while(local_head && local_head->data != data){
-
-      if(local_head->info == data)
-      exists = true;
-
-      local_head = local_head->next;
-
-   }
-
-   return exists;
+template <class type>
+void List<type>::printFromFront() {
+  int counter = 1;
+  for (Node<type> *ptr = head; ptr != nullptr; ptr = ptr->next) {
+    cout << "NODE [" << counter++ << "] -> ";
+    cout << ptr->value << endl;
+  }
 }

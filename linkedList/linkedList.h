@@ -1,27 +1,35 @@
 #include <iostream>
 using namespace std;
 
-template <class dataType>
-struct node
-{
-   dataType data;
-   node* next;
+template <class type> struct Node {
+
+  type value;
+  Node *next;
+  Node *back;
 };
 
-template <class dataType>
-class List{
+template <class type> class List {
 private:
-   dataType length;
-   node<dataType> *head;
+  Node<type> *head;
+  Node<type> *tail;
+  int length;
 
 public:
-   List();
-   List(const List<dataType>&);
-   ~List();
-   void insertNode(dataType);
-   void deleteItem(dataType);
-   //copy constructor
-   void operator=(const List&);
-   bool search(dataType data);
-   void printList();
+  List();
+  ~List();
+  List(const List<type> &);
+  List<type>& operator=(const List<type> &);
+  void insert_back(type);
+  void insert_front(type);
+  void removeAll();
+  void copyAll(const List &);
+  int get_length();
+  bool isEmpty();
+  void search();
+  void printFromFront();
+  void printFromBack();
+  void printEdges();
+  void delete_item(type);
+  // iterator function from first to last
+  // iterator function from last to first
 };
