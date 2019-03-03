@@ -20,23 +20,23 @@ template <class type> void delete_item(List<type> &);
 void checkInput(int &, int);
 
 int main() {
-   // Erase the comments between 24 - 39 to test copy constructor and = operator
-   //  cout << "\nTESTING COPY CONSTRUCTOR & OPERATOR= " << endl;
-   //  cout << "\n";
-   //
-   //  List<int> l2;
-   //  cout << "Random values\n" << endl;
-   //  l2.insert_front(3);
-   //  l2.insert_front(2);
-   //  l2.insert_front(1);
-   //  cout << "List 1: " << endl;
-   //  l2.printFromFront();
-   //  List<int> l3;
-   //  l3 = l2;
-   //  cout << "\nList 2: " << endl;
-   //  l3.printFromFront();
-   // cout << "END OF TESTING" << endl;
-   // cout << "\n\n";
+  // Erase the comments between 24 - 39 to test copy constructor and = operator
+  //  cout << "\nTESTING COPY CONSTRUCTOR & OPERATOR= " << endl;
+  //  cout << "\n";
+  //
+  //  List<int> l2;
+  //  cout << "Random values\n" << endl;
+  //  l2.insert_front(3);
+  //  l2.insert_front(2);
+  //  l2.insert_front(1);
+  //  cout << "List 1: " << endl;
+  //  l2.printFromFront();
+  //  List<int> l3;
+  //  l3 = l2;
+  //  cout << "\nList 2: " << endl;
+  //  l3.printFromFront();
+  // cout << "END OF TESTING" << endl;
+  // cout << "\n\n";
 
   List<int> l1;
 

@@ -26,7 +26,7 @@
 #include <iostream>
 using namespace std;
 
-//Generic node structure
+// Generic node structure
 template <class type> struct Node {
 
   type value;

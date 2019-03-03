@@ -37,10 +37,9 @@ template <class type> void List<type>::copyAll(const List &other) {
     head->value = other.head->value;
     head->back = nullptr;
     head->next = nullptr;
-    Node<type>* other_walker = other.head->next;
-    Node<type>* this_walker = head;
-    while(other_walker != nullptr)
-    {
+    Node<type> *other_walker = other.head->next;
+    Node<type> *this_walker = head;
+    while (other_walker != nullptr) {
       this_walker->next = new Node<type>;
       this_walker->next->value = other_walker->value;
       this_walker->next->next = nullptr;
@@ -48,14 +47,12 @@ template <class type> void List<type>::copyAll(const List &other) {
 
       this_walker = this_walker->next;
       other_walker = other_walker->next;
-   }
-   tail = this_walker;
+    }
+    tail = this_walker;
   }
 }
 
-template <class type> int List<type>::get_length() const{
-  return length;
-}
+template <class type> int List<type>::get_length() const { return length; }
 
 template <class type> List<type>::List(const List<type> &other) {
   copyAll(other);
@@ -179,8 +176,7 @@ template <class type> bool List<type>::delete_item(type item) {
   if (isEmpty()) {
     cout << "List is empty, nothing to delete" << endl;
     deleted = true;
-  }
-  else if (head->value == item) {
+  } else if (head->value == item) {
     delete head;
 
     cout << "Item deleted at Node[1]" << endl;
@@ -188,8 +184,7 @@ template <class type> bool List<type>::delete_item(type item) {
 
     deleted = true;
 
-  }
-  else if (tail->value == item) {
+  } else if (tail->value == item) {
     dummy = tail;
     tail = dummy->back;
     tail->next = nullptr;
