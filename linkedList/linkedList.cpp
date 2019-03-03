@@ -1,3 +1,24 @@
+/*
+   Jairo Molina
+   molinaandres9991@gmail.com
+   CSC 331H. Prof Salvatti
+
+   LargeInt Project
+   "linkedList.cpp"
+
+   *********************************************
+
+   This file implements the following functions:
+   - Insert Front & Back
+   - Print Front, Back, Edges
+   - Search and Delete
+   - Remove all, Copy all
+   - Constructors, Operator= Overloaded
+   - is_Empty, get_Length
+
+   *********************************************
+*/
+
 #include "linkedList.h"
 
 template <class type> List<type>::List() {
@@ -7,12 +28,33 @@ template <class type> List<type>::List() {
 }
 
 template <class type> void List<type>::copyAll(const List &other) {
-  if (other.length == 0) {
+  if (other.get_length() == 0) {
     head = tail = nullptr;
     length = 0;
   } else {
-    // work this
+    length = other.length;
+    head = new Node<type>;
+    head->value = other.head->value;
+    head->back = nullptr;
+    head->next = nullptr;
+    Node<type>* other_walker = other.head->next;
+    Node<type>* this_walker = head;
+    while(other_walker != nullptr)
+    {
+      this_walker->next = new Node<type>;
+      this_walker->next->value = other_walker->value;
+      this_walker->next->next = nullptr;
+      this_walker->next->back = this_walker;
+
+      this_walker = this_walker->next;
+      other_walker = other_walker->next;
+   }
+   tail = this_walker;
   }
+}
+
+template <class type> int List<type>::get_length() const{
+  return length;
 }
 
 template <class type> List<type>::List(const List<type> &other) {
@@ -91,9 +133,7 @@ template <class type> void List<type>::insert_back(type info) {
   cout << "Value inserted into Node[" << length << "]" << endl;
 }
 
-template <class type> bool List<type>::isEmpty() {
-   return (length == 0);
-}
+template <class type> bool List<type>::isEmpty() { return (length == 0); }
 
 template <class type> void List<type>::printEdges() {
   if (isEmpty()) {
@@ -131,87 +171,84 @@ template <class type> void List<type>::printFromBack() {
   }
 }
 
-
 template <class type> bool List<type>::delete_item(type item) {
-  Node<type> *walker = head;
   Node<type> *dummy;
   bool deleted = false;
+  int counter = 1;
 
-  if(isEmpty())
-  {
-     cerr << "Nothing to delete, list is empty" << endl;
+  if (isEmpty()) {
+    cout << "List is empty, nothing to delete" << endl;
+    deleted = true;
   }
- else if(head->value == item)
-  {
-     dummy = head;
-     head = dummy->next;
-     head->back = nullptr;
-     length--;
-     cout << "length updated: " << length << endl;
-     delete dummy;
+  else if (head->value == item) {
+    delete head;
 
-     deleted = true;
- }
- else if (tail->value == item){
-    dummy = tail;
-    tail = dummy->back;
-    tail->next = nullptr;
-    length--;
-    cout << "length updated: " << length << endl;
-    delete dummy;
+    cout << "Item deleted at Node[1]" << endl;
+    cout << "Length updated: " << --length << endl;
 
     deleted = true;
 
-} else {
-    while (walker != nullptr || walker->value != item) {
-     if (walker->value == item) {
+  }
+  else if (tail->value == item) {
+    dummy = tail;
+    tail = dummy->back;
+    tail->next = nullptr;
+    delete dummy;
+
+    cout << "Item deleted at Node[" << length-- << "]" << endl;
+    cout << "Length updated: " << get_length() << endl;
+
+    deleted = true;
+
+  } else {
+    Node<type> *walker = head;
+    while (walker != nullptr) {
+      if (walker->value == item) {
         dummy = walker;
         walker->back->next = dummy->next;
         dummy->next->back = walker->back;
-        length--;
-        cout << "length updated: " << length << endl;
         delete dummy;
+
+        length--;
+        cout << "Item deleted at Node[" << counter << "]" << endl;
+        cout << "Length updated: " << get_length() << endl;
 
         deleted = true;
         break;
-     } else {
+      } else {
         walker = walker->next;
-     }
+        counter++;
+      }
     }
-}
+  }
   return deleted;
 }
 
-template <class type>
-bool List<type>::search(type item) {
-//    int counter = 1;
+template <class type> bool List<type>::search(type item) {
+
+  bool check = false;
+  if (isEmpty()) {
+    cout << "List is empty, nothing to delete" << endl;
+    check = true;
+  } else if (head->value == item) {
+    cout << "Item found at Node[1]" << endl;
+    check = true;
+  } else if (tail->value == item) {
+    cout << "Item found at Node[" << get_length() << "]" << endl;
+    check = true;
+  } else {
+
     Node<type> *walker = head;
-    bool found = false;
-    
-    if(isEmpty())
-    {
-        cerr << "Nothing to look for, list is empty" << endl;
+    int counter = 1;
+    while (walker != nullptr) {
+      if (walker->value == item) {
+        cout << "Item found at Node[" << counter << "]" << endl;
+        check = true;
+        break;
+      }
+      walker = walker->next;
+      counter++;
     }
-    else if(head->value == item)
-    {
-        cout << "Value found in Node[1]" << endl;
-        found = true;
-    }
-    else if (tail->value == item)
-    {
-        cout << "Value found in Node [" << length << "]" << endl;
-        found = true;
-    } else {
-        while(walker != nullptr || walker->value != item)
-        {
-            if(walker->value == item)
-            {
-                found = true;
-                break;
-            } else {
-                walker = walker->next;
-            }
-        }
-    }
-    return found;
+  }
+  return check;
 }

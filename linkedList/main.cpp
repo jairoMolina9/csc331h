@@ -1,6 +1,11 @@
-// Example of linked list
-//
-// Jairo Molina
+/*
+   Jairo Molina
+   molinaandres9991@gmail.com
+   CSC 331H. Prof Salvatti
+
+   LargeInt Project
+   "main.cpp"
+*/
 
 #include "linkedList.cpp"
 
@@ -15,18 +20,24 @@ template <class type> void delete_item(List<type> &);
 void checkInput(int &, int);
 
 int main() {
-  //   List<int> l2;
-  //   l2.insert_front(3);
-  //   l2.insert_front(2);
-  //   l2.insert_front(1);
-  //   l2.printFromFront();
-  //   cout << "\n\n\n";
-  //   List<int> l3;
-  //   l3 = l2;
-  //   l3.printFromFront();
-  //   l3.printEdges();
-  // }
-  //
+   // Erase the comments between 24 - 39 to test copy constructor and = operator
+   //  cout << "\nTESTING COPY CONSTRUCTOR & OPERATOR= " << endl;
+   //  cout << "\n";
+   //
+   //  List<int> l2;
+   //  cout << "Random values\n" << endl;
+   //  l2.insert_front(3);
+   //  l2.insert_front(2);
+   //  l2.insert_front(1);
+   //  cout << "List 1: " << endl;
+   //  l2.printFromFront();
+   //  List<int> l3;
+   //  l3 = l2;
+   //  cout << "\nList 2: " << endl;
+   //  l3.printFromFront();
+   // cout << "END OF TESTING" << endl;
+   // cout << "\n\n";
+
   List<int> l1;
 
   int option = 0;
@@ -50,7 +61,7 @@ int main() {
       delete_item(l1);
       break;
     case 3:
-        search(l1);
+      search(l1);
       break;
     case 4:
       print(l1);
@@ -145,38 +156,29 @@ void checkInput(int &option, int error) {
   }
 }
 
-template <class type> void search(List<type> & list) {
-    int input;
-    
-    cout << "Enter the value you are looking for: " << endl;
-    cin >> input;
-    checkInput(input, 3);
-    
-//    list.search(input);
-    
-   bool check = list.search(input);
-   if(check)
-   {
-      cout << "Item found" << endl;
-   } else {
-      cout << "Item not found" << endl;
-   }
-    
-    
-        
+template <class type> void search(List<type> &list) {
+  int input;
+
+  cout << "Enter the value you are looking for: " << endl;
+  cin >> input;
+  checkInput(input, 3);
+
+  //    list.search(input);
+
+  bool check = list.search(input);
+  if (!check) {
+    cout << "Item does not exist" << endl;
+  }
 }
 
-template <class type> void delete_item(List<type> & list) {
-   int input;
+template <class type> void delete_item(List<type> &list) {
+  int input;
 
-   cout << "Enter the value to be deleted: " << endl;
-   cin >> input;
-   checkInput(input, 3);
-   bool check = list.delete_item(input);
-   if(check)
-   {
-      cout << "Item deleted" << endl;
-   } else {
-      cout << "Item not found" << endl;
-   }
+  cout << "Enter the value to be deleted: " << endl;
+  cin >> input;
+  checkInput(input, 3);
+  bool check = list.delete_item(input);
+  if (!check) {
+    cout << "Item does not exist" << endl;
+  }
 }

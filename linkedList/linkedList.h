@@ -1,15 +1,24 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+   Jairo Molina
+   molinaandres9991@gmail.com
+   CSC 331H. Prof Salvatti
 
-/* 
- * File:   linkedList.h
- * Author: molin
- *
- * Created on March 2, 2019, 9:48 PM
- */
+   LargeInt Project
+   "linkedList.h"
+
+   *********************************************
+
+   This file contains the prototypes of
+   the following functions:
+   - Insert Front & Back
+   - Print Front, Back, Edges
+   - Search and Delete
+   - Constructors, Operator= Overloaded
+   - Remove all, Copy all
+   - is_Empty, get_Length
+
+   *********************************************
+*/
 
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
@@ -17,6 +26,7 @@
 #include <iostream>
 using namespace std;
 
+//Generic node structure
 template <class type> struct Node {
 
   type value;
@@ -39,7 +49,7 @@ public:
   void insert_front(type);
   void removeAll();
   void copyAll(const List &);
-  int get_length();
+  int get_length() const;
   bool isEmpty();
   bool search(type);
   void printFromFront();
