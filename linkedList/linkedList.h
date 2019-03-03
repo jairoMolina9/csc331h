@@ -6,18 +6,13 @@
    LargeInt Project
    "linkedList.h"
 
-   *********************************************
+   --------------------------------------------
+               <In this File>
 
-   This file contains the prototypes of
-   the following functions:
-   - Insert Front & Back
-   - Print Front, Back, Edges
-   - Search and Delete
-   - Constructors, Operator= Overloaded
-   - Remove all, Copy all
-   - is_Empty, get_Length
+   You will find the generic structure of the
+   nodes, and the prototypes of every function
 
-   *********************************************
+   --------------------------------------------
 */
 
 #ifndef LINKEDLIST_H
@@ -26,15 +21,18 @@
 #include <iostream>
 using namespace std;
 
-// Generic node structure
-template <class type> struct Node {
+/*Generic node structure*/
+template <class type>
+struct Node {
 
   type value;
   Node *next;
   Node *back;
 };
 
-template <class type> class List {
+/*Generic list class*/
+template <class type>
+class List {
 private:
   Node<type> *head;
   Node<type> *tail;
@@ -45,17 +43,17 @@ public:
   ~List();
   List(const List<type> &);
   List<type> &operator=(const List<type> &);
-  void insert_back(type);
-  void insert_front(type);
-  void removeAll();
   void copyAll(const List &);
-  int get_length() const;
-  bool isEmpty();
-  bool search(type);
+  void insert_front(type);
+  void insert_back(type);
+  void removeAll();
   void printFromFront();
   void printFromBack();
   void printEdges();
+  bool isEmpty();
   bool delete_item(type);
+  bool search(type);
+  int get_length() const;
   // iterator function from first to last
   // iterator function from last to first
 };
