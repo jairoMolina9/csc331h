@@ -100,10 +100,10 @@ template <class type> void List<type>::printEdges() {
     cerr << "The list is empty" << endl;
     return;
   }
-  cout << "The HEAD value" << endl;
+  cout << "The HEAD value ";
   cout << "[ " << head->value << " ]" << endl;
   cout << "\n";
-  cout << "The TAIL value" << endl;
+  cout << "The TAIL value ";
   cout << "[ " << tail->value << " ]" << endl;
 }
 
@@ -167,6 +167,7 @@ template <class type> bool List<type>::delete_item(type item) {
      if (walker->value == item) {
         dummy = walker;
         walker->back->next = dummy->next;
+        dummy->next->back = walker->back;
         length--;
         cout << "length updated: " << length << endl;
         delete dummy;
@@ -179,4 +180,38 @@ template <class type> bool List<type>::delete_item(type item) {
     }
 }
   return deleted;
+}
+
+template <class type>
+bool List<type>::search(type item) {
+//    int counter = 1;
+    Node<type> *walker = head;
+    bool found = false;
+    
+    if(isEmpty())
+    {
+        cerr << "Nothing to look for, list is empty" << endl;
+    }
+    else if(head->value == item)
+    {
+        cout << "Value found in Node[1]" << endl;
+        found = true;
+    }
+    else if (tail->value == item)
+    {
+        cout << "Value found in Node [" << length << "]" << endl;
+        found = true;
+    } else {
+        while(walker != nullptr || walker->value != item)
+        {
+            if(walker->value == item)
+            {
+                found = true;
+                break;
+            } else {
+                walker = walker->next;
+            }
+        }
+    }
+    return found;
 }
