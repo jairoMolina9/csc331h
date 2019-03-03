@@ -18,7 +18,7 @@ public:
   List();
   ~List();
   List(const List<type> &);
-  List<type>& operator=(const List<type> &);
+  List<type> &operator=(const List<type> &);
   void insert_back(type);
   void insert_front(type);
   void removeAll();
@@ -29,7 +29,7 @@ public:
   void printFromFront();
   void printFromBack();
   void printEdges();
-  void delete_item(type);
+  bool delete_item(type);
   // iterator function from first to last
   // iterator function from last to first
 };
