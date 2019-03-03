@@ -8,6 +8,8 @@ template <class type> void insert(List<type> &);
 
 template <class type> void print(List<type> &);
 
+template <class type> void search(List<type> &);
+
 template <class type> void delete_item(List<type> &);
 
 void checkInput(int &, int);
@@ -48,6 +50,7 @@ int main() {
       delete_item(l1);
       break;
     case 3:
+        search(l1);
       break;
     case 4:
       print(l1);
@@ -82,7 +85,7 @@ template <class type> void insert(List<type> &list) {
 template <class type> void print(List<type> &list) {
   int option;
 
-  cout << "Choose what you desire to print \n1. Front -> Back \n2. Front <- "
+  cout << "Choose a printing option \n1. Front -> Back \n2. Front <- "
           "Back \n3. Edges"
        << endl;
 
@@ -140,6 +143,27 @@ void checkInput(int &option, int error) {
   default:
     break;
   }
+}
+
+template <class type> void search(List<type> & list) {
+    int input;
+    
+    cout << "Enter the value you are looking for: " << endl;
+    cin >> input;
+    checkInput(input, 3);
+    
+//    list.search(input);
+    
+   bool check = list.search(input);
+   if(check)
+   {
+      cout << "Item found" << endl;
+   } else {
+      cout << "Item not found" << endl;
+   }
+    
+    
+        
 }
 
 template <class type> void delete_item(List<type> & list) {
