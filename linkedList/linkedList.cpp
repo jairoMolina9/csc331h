@@ -22,7 +22,7 @@
 
 #include "linkedList.h"
 
-/* Default Constructor */
+/* Default List Constructor */
 template <class type> List<type>::List() {
   head = nullptr;
   tail = nullptr;
@@ -33,7 +33,7 @@ template <class type> List<type>::List() {
 template <class type> List<type>::~List() {
   /*To successfuly erase a list, all the nodes must be deallocated*/
   removeAll();
-  cout << "Object List Deleted" << endl; //useful for debugging
+  cout << "Destructor called, List deleted" << endl; //useful for debugging
 }
 
 /* This is a copy constructor that receives an object as parameter */
@@ -130,7 +130,7 @@ void List<type>::insert_back(type info) {
     length++; //increase length by one
   }
 
-  cout << "Value inserted into Node[" << length << "]" << endl;
+  cout << "Value inserted into Node[" << length << "]\n" << endl;
 }
 
 /* Removes every node front->back in a list */
@@ -184,7 +184,6 @@ void List<type>::printEdges() {
   }
   cout << "The HEAD value ";
   cout << "[ " << head->value << " ]" << endl;
-  cout << "\n";
   cout << "The TAIL value ";
   cout << "[ " << tail->value << " ]" << endl;
 }
@@ -205,9 +204,12 @@ bool List<type>::delete_item(type item) {
     cout << "List is empty, nothing to delete" << endl;
     deleted = true;
 } else if (head->value == item) { //if the item is found in the first node
-    delete head;
+    dummy = head;
+    head = head->next;
+    head->back = nullptr;
+    delete dummy;
 
-    cout << "Item deleted at Node[1]" << endl;
+    cout << "\nItem deleted at Node[1]" << endl;
     cout << "Length updated: " << --length << endl;
 
     deleted = true;
@@ -222,7 +224,6 @@ bool List<type>::delete_item(type item) {
     cout << "Length updated: " << get_length() << endl;
 
     deleted = true;
-
 } else { //traverse the list
     Node<type> *walker = head;
     int counter = 1; //used to know which # node was deleted
@@ -284,3 +285,40 @@ template <class type>
 int List<type>::get_length() const {
    return length;
  }
+
+/* ITERATOR CLASS IMPLEMENTATION */
+template <class type>
+class List<type>::Iterator {
+  private:
+      Node<type> *iter;
+  public:
+     Iterator() : iter(nullptr) { }
+      Iterator(Node<type> *ptr) : iter(ptr) {}
+
+      Iterator operator++(){
+          if(iter->next != nullptr){
+              iter = iter->next;
+          }
+          return iter;
+      }
+
+      type operator*() {
+         type value;
+          if(iter != nullptr){
+              value = iter->value;
+          }
+           return value;
+      }
+
+      Iterator operator--() {
+          if(iter->back != nullptr){
+              iter = iter->back;
+          }
+          return iter;
+      }
+
+      bool is_item(){
+          return iter != nullptr;
+      }
+
+  };
