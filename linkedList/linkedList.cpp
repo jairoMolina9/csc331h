@@ -2,13 +2,10 @@
    Jairo Molina
    molinaandres9991@gmail.com
    CSC 331H. Prof Salvatti
-
    LargeInt Project
    "linkedList.cpp"
-
    --------------------------------------------
                <In this File>
-
    I implement the following functions:
    - Insert Front & Back
    - Print Front, Back, Edges
@@ -16,7 +13,6 @@
    - Remove all, Copy all
    - Constructors, Operator= Overloaded
    - is_Empty, get_Length
-
    --------------------------------------------
 */
 
@@ -33,29 +29,28 @@ template <class type> List<type>::List() {
 template <class type> List<type>::~List() {
   /*To successfuly erase a list, all the nodes must be deallocated*/
   removeAll();
-  cout << "Destructor called, List deleted" << endl; //useful for debugging
+  cout << "Destructor called, List deleted" << endl; // useful for debugging
 }
 
 /* This is a copy constructor that receives an object as parameter */
-template <class type>
-List<type>::List(const List<type> &other) {
+template <class type> List<type>::List(const List<type> &other) {
   copyAll(other);
 }
 
 /* Overloaded assignment operator, similar to copy constructor */
 template <class type>
 List<type> &List<type>::operator=(const List<type> &other) {
-  if (head == other.head) { //some clients may try to assign two equal objects
+  if (head == other.head) { // some clients may try to assign two equal objects
     cerr << "They are the same" << endl;
   } else {
-     /*Main difference between the copy constructor and the
-       operator= function is that in this case we must deallocate
-       any existing Nodes before copying all
-     */
+    /*Main difference between the copy constructor and the
+      operator= function is that in this case we must deallocate
+      any existing Nodes before copying all
+    */
     removeAll();
     copyAll(other);
   }
-  return *this; //returns the left hand object
+  return *this; // returns the left hand object
 }
 
 /* Performs deep copy between two objects */
@@ -64,7 +59,7 @@ template <class type> void List<type>::copyAll(const List &other) {
     head = tail = nullptr;
     length = 0;
   } else {
-    length = other.length; //no need to increment length
+    length = other.length; // no need to increment length
     head = new Node<type>;
     head->value = other.head->value;
     head->back = nullptr;
@@ -81,20 +76,19 @@ template <class type> void List<type>::copyAll(const List &other) {
       this_walker = this_walker->next;
       other_walker = other_walker->next;
     }
-    tail = this_walker; //let tail pointer be the last node
+    tail = this_walker; // let tail pointer be the last node
   }
 }
 
 /* Inserts value into the front of list */
-template <class type>
-void List<type>::insert_front(type info) {
-  if (isEmpty()) { //if is empty create head node
+template <class type> void List<type>::insert_front(type info) {
+  if (isEmpty()) { // if is empty create head node
     head = new Node<type>;
     head->back = nullptr;
     head->next = nullptr;
     head->value = info;
-    tail = head; //only one node thus tail and head point at same place
-    length++; //increase length by one
+    tail = head; // only one node thus tail and head point at same place
+    length++;    // increase length by one
   } else {
     Node<type> *new_Node = new Node<type>;
     new_Node->value = info;
@@ -103,22 +97,21 @@ void List<type>::insert_front(type info) {
     head->back = new_Node;
 
     head = new_Node; // sets current head to new node
-    length++; //increase length by one
+    length++;        // increase length by one
   }
 
   cout << "Value inserted into Node[1]" << endl;
 }
 
 /* Inserts value into the back of list */
-template <class type>
-void List<type>::insert_back(type info) {
+template <class type> void List<type>::insert_back(type info) {
   if (isEmpty()) {
     head = new Node<type>;
     head->back = nullptr;
     head->next = nullptr;
     head->value = info;
-    tail = head; //only one node thus tail and head point at same place
-    length++; //increase length by one
+    tail = head; // only one node thus tail and head point at same place
+    length++;    // increase length by one
   } else {
     Node<type> *new_Node = new Node<type>;
     new_Node->value = info;
@@ -127,15 +120,14 @@ void List<type>::insert_back(type info) {
     tail->next = new_Node;
 
     tail = new_Node; // sets current tail to new node
-    length++; //increase length by one
+    length++;        // increase length by one
   }
 
   cout << "Value inserted into Node[" << length << "]\n" << endl;
 }
 
 /* Removes every node front->back in a list */
-template <class type>
-void List<type>::removeAll() {
+template <class type> void List<type>::removeAll() {
   Node<type> *walker;
 
   while (head != nullptr) {
@@ -148,13 +140,12 @@ void List<type>::removeAll() {
 }
 
 /* Prints from front->back */
-template <class type>
-void List<type>::printFromFront() {
+template <class type> void List<type>::printFromFront() {
   if (isEmpty()) {
     cerr << "The list is empty" << endl;
     return;
   }
-  int counter = 1; //used to enumarate each node
+  int counter = 1; // used to enumarate each node
   for (Node<type> *ptr = head; ptr != nullptr; ptr = ptr->next) {
     cout << "NODE [" << counter++ << "] -> ";
     cout << ptr->value << endl;
@@ -162,13 +153,12 @@ void List<type>::printFromFront() {
 }
 
 /* Prints from back->front */
-template <class type>
-void List<type>::printFromBack() {
+template <class type> void List<type>::printFromBack() {
   if (isEmpty()) {
     cerr << "The list is empty" << endl;
     return;
   }
-  int counter = length; //used as a dummy var
+  int counter = length; // used as a dummy var
   for (Node<type> *ptr = tail; ptr != nullptr; ptr = ptr->back) {
     cout << "NODE [" << counter-- << "] -> ";
     cout << ptr->value << endl;
@@ -176,8 +166,7 @@ void List<type>::printFromBack() {
 }
 
 /*Prints the value of the current head and tail pointer*/
-template <class type>
-void List<type>::printEdges() {
+template <class type> void List<type>::printEdges() {
   if (isEmpty()) {
     cerr << "The list is empty" << endl;
     return;
@@ -189,21 +178,17 @@ void List<type>::printEdges() {
 }
 
 /* Checks if list is empty */
-template <class type>
-bool List<type>::isEmpty() {
-   return (length == 0);
-}
+template <class type> bool List<type>::isEmpty() { return (length == 0); }
 
 /* Deletes item , returns flag */
-template <class type>
-bool List<type>::delete_item(type item) {
-  Node<type> *dummy; //dummy pointer used to delete value
-  bool deleted = false; //flag
+template <class type> bool List<type>::delete_item(type item) {
+  Node<type> *dummy;    // dummy pointer used to delete value
+  bool deleted = false; // flag
 
-  if (isEmpty()) { //if the list is empty
+  if (isEmpty()) { // if the list is empty
     cout << "List is empty, nothing to delete" << endl;
     deleted = true;
-} else if (head->value == item) { //if the item is found in the first node
+  } else if (head->value == item) { // if the item is found in the first node
     dummy = head;
     head = head->next;
     head->back = nullptr;
@@ -214,27 +199,28 @@ bool List<type>::delete_item(type item) {
 
     deleted = true;
 
-} else if (tail->value == item) { //if the item is found in the last node
+  } else if (tail->value == item) { // if the item is found in the last node
     dummy = tail;
     tail = dummy->back;
     tail->next = nullptr;
     delete dummy;
 
-    cout << "Item deleted at Node[" << length-- << "]" << endl; //postfix decrement
+    cout << "Item deleted at Node[" << length-- << "]"
+         << endl; // postfix decrement
     cout << "Length updated: " << get_length() << endl;
 
     deleted = true;
-} else { //traverse the list
+  } else { // traverse the list
     Node<type> *walker = head;
-    int counter = 1; //used to know which # node was deleted
+    int counter = 1; // used to know which # node was deleted
     while (walker != nullptr) {
-      if (walker->value == item) { //walker pointer finds the item
+      if (walker->value == item) { // walker pointer finds the item
         dummy = walker;
         walker->back->next = dummy->next;
         dummy->next->back = walker->back;
         delete dummy;
 
-        length--; //decrement length
+        length--; // decrement length
         cout << "Item deleted at Node[" << counter << "]" << endl;
         cout << "Length updated: " << get_length() << endl;
 
@@ -246,29 +232,28 @@ bool List<type>::delete_item(type item) {
       }
     }
   }
-  return deleted; //returns flag
+  return deleted; // returns flag
 }
 
 /* Searches for an item , returns item */
-template <class type>
-bool List<type>::search(type item) {
-  bool check = false; //flag
+template <class type> bool List<type>::search(type item) {
+  bool check = false; // flag
 
-  if (isEmpty()) { //if the list is empty
+  if (isEmpty()) { // if the list is empty
     cout << "List is empty, nothing to delete" << endl;
     check = true;
-} else if (head->value == item) { //if item found in first node
+  } else if (head->value == item) { // if item found in first node
     cout << "Item found at Node[1]" << endl;
     check = true;
-} else if (tail->value == item) { //if item found in last node
+  } else if (tail->value == item) { // if item found in last node
     cout << "Item found at Node[" << get_length() << "]" << endl;
     check = true;
-} else { //traverse the list
+  } else { // traverse the list
 
     Node<type> *walker = head;
-    int counter = 1; //used to know which # node was found
+    int counter = 1; // used to know which # node was found
     while (walker != nullptr) {
-      if (walker->value == item) { //walker finds item
+      if (walker->value == item) { // walker finds item
         cout << "Item found at Node[" << counter << "]" << endl;
         check = true;
         break;
@@ -277,48 +262,53 @@ bool List<type>::search(type item) {
       counter++;
     }
   }
-  return check; //returns flag
+  return check; // returns flag
 }
 
 /* Returns the current length of a list */
-template <class type>
-int List<type>::get_length() const {
-   return length;
- }
+template <class type> int List<type>::get_length() const { return length; }
 
 /* ITERATOR CLASS IMPLEMENTATION */
-template <class type>
-class List<type>::Iterator {
-  private:
-      Node<type> *iter;
-  public:
-     Iterator() : iter(nullptr) { }
-      Iterator(Node<type> *ptr) : iter(ptr) {}
+template <class type> class List<type>::Iterator {
+private:
+  Node<type> *iter; //pointer to a node
 
-      Iterator operator++(){
-          if(iter->next != nullptr){
-              iter = iter->next;
-          }
-          return iter;
-      }
+public:
+  Iterator() : iter(nullptr) {}
+  Iterator(Node<type> *ptr) : iter(ptr) {};
 
-      type operator*() {
-         type value;
-          if(iter != nullptr){
-              value = iter->value;
-          }
-           return value;
-      }
+//Moves iterator forward
+  Iterator operator++() {
+    if (iter->next != nullptr) {
+      iter = iter->next;
+    }
+    return iter;
+  }
 
-      Iterator operator--() {
-          if(iter->back != nullptr){
-              iter = iter->back;
-          }
-          return iter;
-      }
+  //Shows the value of iterator
+  type operator*() {
+    type value;
+    if (iter != nullptr) {
+      value = iter->value;
+    }
+    return value;
+  }
 
-      bool is_item(){
-          return iter != nullptr;
-      }
+//Moves iterator backward
+  Iterator operator--() {
+    if (iter->back != nullptr) {
+      iter = iter->back;
+    }
+    return iter;
+  }
 
-  };
+//Checks if two iterators are not equal
+  bool operator!=(const Iterator & other){
+     return iter!=other.iter;
+ }
+
+ //Checks if two iterators are equal
+ bool operator==(const Iterator & other){
+    return iter==other.iter;
+}
+};

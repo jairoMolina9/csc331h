@@ -18,16 +18,14 @@
 using namespace std;
 
 /*Generic node structure*/
-template <class type>
-struct Node {
+template <class type> struct Node {
 
   type value;
   Node *next;
   Node *back;
 };
 
-template <class type>
-class List{
+template <class type> class List {
 private:
   Node<type> *head;
   Node<type> *tail;
@@ -37,7 +35,6 @@ private:
   void removeAll();
 
 public:
-
   List();
   ~List();
   List(const List<type> &);
@@ -53,18 +50,14 @@ public:
   bool search(type);
   int get_length() const;
 
-  //Implementation in .cpp
+  // Implementation in .cpp
   class Iterator;
 
-  //sets iterator to head
-  Iterator begin(void){
-    return Iterator(head);
-  }
+  // sets iterator to head
+  Iterator begin(void) { return Iterator(head); }
 
-  //sets iterator to tail
-  Iterator end(void){
-    return Iterator(tail);
-  }
+  // sets iterator to tail
+  Iterator end(void) { return Iterator(tail); }
 };
 
 #endif /* LINKEDLIST_H */
