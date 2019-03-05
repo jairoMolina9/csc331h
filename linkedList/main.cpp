@@ -27,7 +27,11 @@ template <class type> void search(List<type> &);
 
 template <class type> void delete_item(List<type> &);
 
-void checkInput(int &, int);
+int iterator_menu();
+
+template <class type> void iterator_actions(List<type> &);
+
+void check_Input(int &, int);
 
 int main() {
   /* Uncomment lines 25 - 40 to test copy constructor and = operator */
@@ -59,11 +63,12 @@ int main() {
     cout << "2. Delete" << endl;
     cout << "3. Search" << endl;
     cout << "4. Print" << endl;
+    cout << "5. Iterator Menu" << endl;
     cout << "-1 to Exit" << endl;
 
     cin >> option;
     // validates option and second arguments sets type of error
-    checkInput(option, 1);
+    check_Input(option, 1);
 
     /*After option is validated*/
     switch (option) {
@@ -79,6 +84,8 @@ int main() {
     case 4:
       print(l1);
       break;
+        case 5:
+            iterator_actions(l1);
     default:
       break;
     }
@@ -103,12 +110,12 @@ template <class type> void insert(List<type> &list) {
 
   cin >> option;
   // validates option and second arguments sets type of error
-  checkInput(option, 2);
+  check_Input(option, 2);
 
   cout << "Enter the value you wish to enter: ";
   cin >> input;
   // validates option and second arguments sets type of error
-  checkInput(input, 3);
+  check_Input(input, 3);
 
   if (option == 1) { // From front
     list.insert_front(input);
@@ -127,7 +134,7 @@ template <class type> void print(List<type> &list) {
 
   cin >> option;
   // validates option and second arguments sets specific case
-  checkInput(option, 4);
+  check_Input(option, 4);
 
   /*After option is validated*/
   switch (option) {
@@ -151,7 +158,7 @@ template <class type> void search(List<type> &list) {
   cout << "Enter the value you are looking for: " << endl;
   cin >> input;
   // validates option and second arguments sets specific case
-  checkInput(input, 3);
+  check_Input(input, 3);
 
   // receives flag return from class function search()
   bool exists = list.search(input);
@@ -167,7 +174,7 @@ template <class type> void delete_item(List<type> &list) {
   cout << "Enter the value to be deleted: " << endl;
   cin >> input;
   // validates option and second arguments sets specific case
-  checkInput(input, 3);
+  check_Input(input, 3);
 
   // receives flag return from class function delete()
   bool deleted = list.delete_item(input);
@@ -183,13 +190,13 @@ First argument is the value to be validated
 Second arguments sets the specific type of error
 Note: This does not restrict data type, it remains generic
 -----------------------------------------------------------*/
-void checkInput(int &value, int error) {
+void check_Input(int &value, int error) {
   switch (error) {
   case 1: // error 1
-    while (cin.fail() || (value < -1 || value > 4)) {
+    while (cin.fail() || (value < -1 || value > 5)) {
       cin.clear();
       cin.ignore(256, '\n');
-      cout << "Enter a valid option: ( 1, 2, 3, 4 or -1)" << endl;
+      cout << "Enter a valid option: ( 1, 2, 3, 4, 5 or -1)" << endl;
       cin >> value;
     }
     break;
@@ -217,7 +224,83 @@ void checkInput(int &value, int error) {
       cin >> value;
     }
     break;
+      case 5: // error 5
+    while (cin.fail() || (value < -1 || value > 5)) {
+      cin.clear();
+      cin.ignore(256, '\n');
+      cout << "Enter a valid option: ( 1, 2 , 3, 4, 5)" << endl;
+      cin >> value;
+    }
+    break;
   default:
     break;
   }
+}
+
+/* ITERATOR MENU */
+
+int iterator_menu() {
+    int choice;
+    cout << "Enter iterator option: " << endl;
+    cout << "1. Forward" << endl;
+    cout << "2. Backward" << endl;
+    cout << "3. Print Front->Back" << endl;
+    cout << "4. Print Back->Front" << endl;
+    cout << "-1 to go back to main menu" << endl;
+    cin >> choice;
+    check_Input(choice,5);
+    return choice;
+}
+
+/* ITERATOR MENU ACTIONS */
+template <class type> void iterator_actions(List<type> &list) {
+     
+     int choice = 0;
+     do{
+     
+     if(!list.isEmpty()){
+      choice = iterator_menu();
+     }
+     else {
+         cout << "List is empty, iterators are unavailable" << endl;
+         return;
+     }
+     
+            
+     List<int>::Iterator iter_1 = list.begin();
+     int distance = 1; 
+     cout << "Current Iterator Location Node[" << distance << "]" << " = " << *iter_1 <<endl; 
+            
+        if(choice == 1){
+            if(distance+1 > list.get_length())
+            {
+                cout << "Cannot go forward, you are at the end" << endl;
+                
+            }else{
+                ++iter_1;
+                ++distance;
+            }
+        }else if(choice == 2){
+                --iter_1;
+                 --distance;
+        }else if (choice == 3){
+                List<int>::Iterator iter_2 = list.begin();
+                int dummy = list.get_length();
+                int index = 1;
+                while(dummy!=0)
+                {
+                  cout << "Current Iterator Location Node[" << index++ << "]" << " = " << *iter_2 <<endl; 
+                  ++iter_2;
+                  dummy--;
+                }
+        } else if(choice == 4){
+                List<int>::Iterator iter_3 = list.end();
+                int dummy = list.get_length();
+                while(dummy!=0)
+                {
+                  cout << "Current Iterator Location Node[" << dummy-- << "]" << " = " << *iter_3 <<endl; 
+                  --iter_3;
+                }
+        }
+     }while(choice != -1);
 }
