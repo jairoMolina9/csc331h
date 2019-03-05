@@ -13,6 +13,8 @@
    - Remove all, Copy all
    - Constructors, Operator= Overloaded
    - is_Empty, get_Length
+   and the Iterator class implemantion:
+   - Operator++, --, *, !=, ==
    --------------------------------------------
 */
 
@@ -291,7 +293,7 @@ public:
     if (iter != nullptr) {
       value = iter->value;
     }
-    return value;
+    return value; //return current iterator value
   }
 
 //Moves iterator backward

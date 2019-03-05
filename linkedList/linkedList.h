@@ -8,6 +8,7 @@
                <In this File>
    You will find the generic structure of the
    nodes, and the prototypes of every function
+   as well as Iterator begin() and end()
    --------------------------------------------
 */
 
