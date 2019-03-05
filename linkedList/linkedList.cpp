@@ -33,7 +33,7 @@ template <class type> List<type>::List() {
 template <class type> List<type>::~List() {
   /*To successfuly erase a list, all the nodes must be deallocated*/
   removeAll();
-  cout << "Object List Deleted" << endl; //useful for debugging
+  cout << "Destructor called, List deleted" << endl; //useful for debugging
 }
 
 /* This is a copy constructor that receives an object as parameter */
@@ -130,7 +130,7 @@ void List<type>::insert_back(type info) {
     length++; //increase length by one
   }
 
-  cout << "Value inserted into Node[" << length << "]" << endl;
+  cout << "Value inserted into Node[" << length << "]\n" << endl;
 }
 
 /* Removes every node front->back in a list */
@@ -184,7 +184,6 @@ void List<type>::printEdges() {
   }
   cout << "The HEAD value ";
   cout << "[ " << head->value << " ]" << endl;
-  cout << "\n";
   cout << "The TAIL value ";
   cout << "[ " << tail->value << " ]" << endl;
 }
@@ -210,7 +209,7 @@ bool List<type>::delete_item(type item) {
     head->back = nullptr;
     delete dummy;
 
-    cout << "Item deleted at Node[1]" << endl;
+    cout << "\nItem deleted at Node[1]" << endl;
     cout << "Length updated: " << --length << endl;
 
     deleted = true;
@@ -225,7 +224,6 @@ bool List<type>::delete_item(type item) {
     cout << "Length updated: " << get_length() << endl;
 
     deleted = true;
-
 } else { //traverse the list
     Node<type> *walker = head;
     int counter = 1; //used to know which # node was deleted
