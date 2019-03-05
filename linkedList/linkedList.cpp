@@ -22,7 +22,7 @@
 
 #include "linkedList.h"
 
-/* Default Constructor */
+/* Default List Constructor */
 template <class type> List<type>::List() {
   head = nullptr;
   tail = nullptr;
@@ -205,7 +205,10 @@ bool List<type>::delete_item(type item) {
     cout << "List is empty, nothing to delete" << endl;
     deleted = true;
 } else if (head->value == item) { //if the item is found in the first node
-    delete head;
+    dummy = head;
+    head = head->next;
+    head->back = nullptr;
+    delete dummy;
 
     cout << "Item deleted at Node[1]" << endl;
     cout << "Length updated: " << --length << endl;
@@ -284,3 +287,40 @@ template <class type>
 int List<type>::get_length() const {
    return length;
  }
+
+/* ITERATOR CLASS IMPLEMENTATION */
+template <class type>
+class List<type>::Iterator {
+  private:
+      Node<type> *iter;
+  public:
+     Iterator() : iter(nullptr) { }
+      Iterator(Node<type> *ptr) : iter(ptr) {}
+      
+      Iterator operator++(){
+          if(iter->next != nullptr){
+              iter = iter->next;
+          }
+          return iter;
+      }
+      
+      type operator*() {
+          if(iter != nullptr){
+              return iter->value;
+          }
+          
+      }
+      
+      Iterator operator--() {
+          if(iter->back != nullptr){
+              iter = iter->back;
+          }
+          return iter;
+      }
+      
+      bool is_item(){
+          return iter != nullptr;
+      }
+      
+  };
+  
