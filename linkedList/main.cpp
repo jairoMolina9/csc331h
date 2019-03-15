@@ -56,7 +56,7 @@ int main() {
     // cout << "END OF TESTING" << endl;
     // cout << "\n\n";
 
-  List<int> l1; // change to any data type
+  List<char> l1; // change to any data type
 
   int option = 0;
 
@@ -74,7 +74,7 @@ int main() {
     // validates option and second arguments sets type of error
     check_Input(option, 1);
 
-    system("cls"); // clear screen
+    system("clear"); // clear screen windows "clear" for linux
 
     /*After option is validated*/
     switch (option) {
@@ -285,28 +285,29 @@ template <class type> void iterator_actions(List<type> &list) {
       }
    } else if (choice == 3) { //option print from front
       iter_2 = list.begin(); //set iterator to beginning of list
-      int dummy = list.get_length();
-      int index = 1; //node location
+      int location = 1; //current location of dummy iterator
       cout << "\nPRINTING..." << endl;
-      while (dummy != 0) {//list length is not zero
-        cout << "Dummy Iterator Location Node[" << index++ << "]"
+      for(;iter_2 != list.end(); ++iter_2){
+        cout << "Dummy Iterator Location Node[" << location++ << "]"
              << " = " << *iter_2 << endl;
-        ++iter_2;//iterator moves to the next node
-        dummy--;
-      }
+          }
+          cout << "Dummy Iterator Location Node[" << location++ << "]"
+               << " = " << *iter_2 << endl; //prints last node only
+
    } else if (choice == 4) { //option print from back
       iter_2 = list.end(); //set to end of list
-      int dummy = list.get_length();
+      int location = 1;//current location of dummy iterator
       cout << "\nPRINTING..." << endl;
-      while (dummy != 0) { //list length is not zero
-        cout << "Dummy Iterator Location Node[" << dummy-- << "]"
+      for(;iter_2 != list.begin(); --iter_2){
+        cout << "Dummy Iterator Location Node[" << location++ << "]"
              << " = " << *iter_2 << endl;
-        --iter_2; //iterator moves to the previous node
-      }
+          }
+          cout << "Dummy Iterator Location Node[" << location++ << "]"
+               << " = " << *iter_2 << endl; //prints last node only
     }
     cout << "\nYour Iterator is at Node[" << location << "]"
          << " = " << *iter_1 << "\n"
-         << endl;
+         << endl; //prints last node only
   } while (choice != 5);
 
   cout << "Your iterator was reset\n" << endl;
@@ -324,6 +325,6 @@ int iterator_menu() {
   cin >> option;
   // validates option and second arguments sets type of error
   check_Input(option, 1);
-  system("cls"); // clear screen
+  system("clear"); // clear screen windows "clear" for linux
   return option;
 }

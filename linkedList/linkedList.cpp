@@ -190,7 +190,11 @@ template <class type> bool List<type>::delete_item(type item) {
   if (isEmpty()) { // if the list is empty
     cout << "List is empty, nothing to delete" << endl;
     deleted = true;
-  } else if (head->value == item) { // if the item is found in the first node
+} else if (length == 1){
+   head = tail = nullptr;
+   cout << "List is empty" << endl;
+   length--;
+}else if (head->value == item) { // if the item is found in the first node
     dummy = head;
     head = head->next;
     head->back = nullptr;
@@ -271,7 +275,8 @@ template <class type> bool List<type>::search(type item) {
 template <class type> int List<type>::get_length() const { return length; }
 
 /* ITERATOR CLASS IMPLEMENTATION */
-template <class type> class List<type>::Iterator {
+template <class type>
+ class List<type>::Iterator {
 private:
   Node<type> *iter; //pointer to a node
 
