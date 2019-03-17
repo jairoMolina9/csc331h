@@ -29,7 +29,7 @@ template <class T> bool Stack<T>::isFullStack() {
 }
 
 template <class T> bool Stack<T>::isEmptyStack() {
-   return top == nullptr;
+   return capacity == 0;
 }
 
 template <class T> void Stack<T>::initializeStack() {
@@ -57,6 +57,7 @@ template <class T> void Stack<T>::push(T item) {
     top = new Node<T>;
     top->info = item;
     top->down = nullptr;
+    capacity++;
     cout << "Successfully inserted item" << endl;
   } else {
     Node<T> *newNode = new Node<T>;
@@ -76,6 +77,9 @@ template <class T> void Stack<T>::pop() {
   if (isEmptyStack()) {
     cerr << "Stack is empty, cannot retrieve" << endl;
     return;
+  } else if(capacity == 1) {
+      delete top;
+      top = nullptr;
   } else {
     Node<T> *temp = top;
     top = top->down;
