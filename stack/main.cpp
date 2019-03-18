@@ -1,10 +1,10 @@
 /*
 TO DO:
-negative numbers with space
+if negative sign is in first place
 */
 
 #include "stack.cpp"
-#include < algorithm >
+#include <algorithm>
 
   int preference(char oprt) {
     int preference = 0;
@@ -61,7 +61,7 @@ int main() {
   Stack < char > operators;
 
   string exp;
-  //  string exp = "3*2-(1+2)";
+  
   do {
     cout << "Type INFIX expression or 'X' to quit" << endl;
     getline(cin, exp);
