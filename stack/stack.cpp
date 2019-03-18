@@ -29,7 +29,7 @@ template <class T> bool Stack<T>::isFullStack() {
 }
 
 template <class T> bool Stack<T>::isEmptyStack() {
-   return capacity == 0;
+   return top == nullptr;
 }
 
 template <class T> void Stack<T>::initializeStack() {
