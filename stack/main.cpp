@@ -90,69 +90,42 @@ int main() {
         }
         // pop opening brace.
         operators.pop();
-      } else if (exp[i] == '-') {
-        if (i == 0) { // need to do if - 2+1
-          while (i < exp.length()) {
-            if (isdigit(exp[i + 1])) {
-              int value = 0;
+     } else if (exp[i] == '-' && (i == 0 || (exp[i-1] >= 40 && (exp[i-1] != 41) && exp[i-1] <= 47))) {
+        if (i == 0 || (exp[i-1] >= 40 && exp[i-1] <= 47)) { // is symbol besides () checks index before
+             while (i < exp.length()) {
+               if (isdigit(exp[i + 1])) { // next char is digit
+                 int value = 0;
 
-              value = (value * 10) + (exp[++i] - '0'); // always sets digit
+                 value = (value * 10) + (exp[++i] - '0'); // value is next char
 
-              while (
-                  i < exp.length() &&
-                  isdigit(
-                      exp[i + 1])) { // only sets digit if following is a digit
-                value = (value * 10) + (exp[i + 1] - '0');
-                i++;
-              }
-              operands.push(value * -1);
-            }
-            break;
-          } // need to do if - 2+1
-        } else {
-
-          int j = i - 1; // checks index of before '-'
-          while (j >= 0) {
-            if (exp[j] >= 42 && exp[j] <= 47) { // if symbol
-              if (isdigit(exp[++i])) {
-                int value = 0;
-                value = (value * 10) + (exp[i] - '0');
-                while (i < exp.length() &&
-                       isdigit(exp[i + 1])) { // only sets digit if following is
-                                              // a digit
-                  value = (value * 10) + (exp[i + 1] - '0');
-                  i++;
-                }
-                operands.push(value * -1);
-
-                break;
-              }
-            } else if (isdigit(exp[j])) {
-              operators.push(exp[i]);
-              break;
-            } else {
-              j--;
-            }
-          }
-        }
-      } else {
-        while (!operators.isEmptyStack() &&
-               preference(operators._top()) >=
-                   preference(exp[i])) // solves high preference operators
+                 while (i < exp.length() &&isdigit(exp[i + 1])) { // only sets digit if following is a digit
+                   value = (value * 10) + (exp[i + 1] - '0');
+                   i++;
+                 }
+                 operands.push(value * -1);
+               }
+               break;
+             }
+      }
+   } else {
+        while (!operators.isEmptyStack() && preference(operators._top()) >= preference(exp[i])) // solves high preference operators
         {
           setArguments(operands, operators);
         }
-        operators.push(exp[i]); // pushes operator
+
+        operators.push(exp[i]); // pushes current 'i' because is an operator
       }
     } // end of for loop
 
-    while (!operators.isEmptyStack()) // solves resolving operators
+    while (!operators.isEmptyStack()) // solves low preference operators
     {
       setArguments(operands, operators);
     }
+
     cout << "The result is: " << operands._top() << endl;
     operands.pop();
   } while (exp != "x" && exp != "X");
+
   cout << "Good bye" << endl;
   return 0;
 }
