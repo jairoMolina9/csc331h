@@ -7,34 +7,26 @@ template <class T> Stack<T>::Stack() {
 
 template <class T> Stack<T>::~Stack() {
   initializeStack();
-  //cout << "Destructor called" << endl;
+  // cout << "Destructor called" << endl;
 }
 
-template <class T> Stack<T>::Stack(const Stack<T> &other) {
-  copyStack(other);
-}
+template <class T> Stack<T>::Stack(const Stack<T> &other) { copyStack(other); }
 
 template <class T> void Stack<T>::operator=(const Stack<T> &other) {
-  if (this == &other) {
-    //cerr << "Both Stacks are the same" << endl;
-    return;
-  } else {
-     initializeStack();
-     copyStack(other);
-  }
+
+  initializeStack();
+  copyStack(other);
 }
 
 template <class T> bool Stack<T>::isFullStack() {
   return false; // stack is technically never full
 }
 
-template <class T> bool Stack<T>::isEmptyStack() {
-   return top == nullptr;
-}
+template <class T> bool Stack<T>::isEmptyStack() { return top == nullptr; }
 
 template <class T> void Stack<T>::initializeStack() {
   if (isEmptyStack()) {
-    //cerr << "Stack is empty" << endl;
+    // cerr << "Stack is empty" << endl;
     return;
   } else {
     Node<T> *temp;
@@ -51,14 +43,14 @@ template <class T> void Stack<T>::initializeStack() {
 template <class T> void Stack<T>::push(T item) {
 
   if (isFullStack()) {
-    //cerr << "Stack is full" << endl;
+    // cerr << "Stack is full" << endl;
     return;
   } else if (isEmptyStack()) {
     top = new Node<T>;
     top->info = item;
     top->down = nullptr;
     capacity++;
-    //cout << "Successfully inserted item" << endl;
+    // cout << "Successfully inserted item" << endl;
   } else {
     Node<T> *newNode = new Node<T>;
 
@@ -68,19 +60,19 @@ template <class T> void Stack<T>::push(T item) {
 
     capacity++;
 
-   // cout << "Successfully inserted item" << endl;
+    // cout << "Successfully inserted item" << endl;
   }
 }
 
 template <class T> void Stack<T>::pop() {
 
   if (isEmptyStack()) {
-    //cerr << "Stack is empty, cannot retrieve" << endl;
+    // cerr << "Stack is empty, cannot retrieve" << endl;
     return;
-  } else if(capacity == 1) {
-      delete top;
-      top = nullptr;
-      capacity = 0;
+  } else if (capacity == 1) {
+    delete top;
+    top = nullptr;
+    capacity = 0;
   } else {
     Node<T> *temp = top;
     top = top->down;
@@ -88,7 +80,7 @@ template <class T> void Stack<T>::pop() {
 
     capacity--;
 
-   // cout << "Successfully deleted item" << endl;
+    // cout << "Successfully deleted item" << endl;
   }
 }
 
@@ -96,30 +88,28 @@ template <class T> T Stack<T>::_top() { return top->info; }
 
 template <class T> void Stack<T>::copyStack(const Stack<T> &other) {
   if (other.capacity == 0) {
-   // cerr << "Cannot copy, is empty" << endl;
+    // cerr << "Cannot copy, is empty" << endl;
     return;
   } else if (this == &other) {
-   // cerr << "Both are the same, cannot copy" << endl;
+    // cerr << "Both are the same, cannot copy" << endl;
     return;
   } else {
-     capacity = other.capacity;
+    capacity = other.capacity;
 
     top = new Node<T>;
     top->info = other.top->info;
     top->down = nullptr;
 
     Node<T> *other_temp = other.top->down;
-    Node<T> *this_temp = top;
+    Node<T> *this_temp = top->down;
 
-    while(other_temp != nullptr)
-    {
-      this_temp->down = new Node<T>;
-      this_temp->down->info = other_temp->info;
-      this_temp->down->down = nullptr;
+    while (other_temp != nullptr) {
+      this_temp = new Node<T>;
+      this_temp->info = other_temp->info;
+      this_temp->down = nullptr;
 
       this_temp = this_temp->down;
       other_temp = other_temp->down;
-   }
-
+    }
   }
 }
