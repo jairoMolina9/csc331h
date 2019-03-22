@@ -1,3 +1,13 @@
+/*
+ * main.cpp
+ *
+ *  Created on: Mar 21, 2019
+ *      Author: Jairo Molina
+ *
+ *        Purpose: The purpose of this file is to implement the stack prototype
+ *                 functions.
+ */
+
 #include "stack.h"
 
 template <class T> Stack<T>::Stack() {
@@ -19,7 +29,7 @@ template <class T> void Stack<T>::operator=(const Stack<T> &other) {
 }
 
 template <class T> bool Stack<T>::isFullStack() {
-  return false; // stack is technically never full
+  return false;                               // stack is technically never full
 }
 
 template <class T> bool Stack<T>::isEmptyStack() { return top == nullptr; }
@@ -84,7 +94,12 @@ template <class T> void Stack<T>::pop() {
   }
 }
 
-template <class T> T Stack<T>::_top() { return top->info; }
+template <class T> T Stack<T>::_top() {
+  if (!isEmptyStack())
+    return top->info;
+  else
+    return 0;
+}
 
 template <class T> void Stack<T>::copyStack(const Stack<T> &other) {
   if (other.capacity == 0) {
