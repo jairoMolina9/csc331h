@@ -24,8 +24,8 @@ struct Node {
 template <class T>
 class Stack{
 private:
-   Node<T> *top;
-   int capacity;
+   Node<T> *top;                    //Always points at top node
+   int capacity;                    //Keeps track of size
 
 public:
    Stack();                         //default constructor
