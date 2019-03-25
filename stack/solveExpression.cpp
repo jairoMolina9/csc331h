@@ -48,10 +48,10 @@ int ExpressionEvaluator::calculate(char oprt, int arg1, int arg2)
 
 void ExpressionEvaluator::setArguments()
 {
-      int arg2 = operands._top();
+      int arg1 = operands._top();
       operands.pop();
 
-      int arg1 = operands._top();
+      int arg2 = operands._top();
       operands.pop();
 
       char opt = operators._top();
@@ -73,7 +73,7 @@ void ExpressionEvaluator::solve()
          else if (isdigit(exp[i]))
          {
 
-               int value = 0;
+               int value = 0; //holds total digit
 
                value = (value * 10) + (exp[i] - '0');   // always sets digit
 
@@ -98,7 +98,7 @@ void ExpressionEvaluator::solve()
 
                operators.pop();       //closes (..) by popping ')'
 
-         }/* Finds negative digit if current 'i' is 0 index or if is any symbol besides ')' */
+         }/* Finds negative digit if current 'i' is 0 index or if right char is any symbol besides ')' */
          else if (exp[i] == '-' && (i == 0 || (exp[i - 1] >= '(' && exp[i - 1] <= '/' && exp[i - 1] != ')')))
          {
                while (i < exp.length())
