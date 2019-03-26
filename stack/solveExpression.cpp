@@ -15,29 +15,29 @@ int ExpressionEvaluator::preference(char oprt)
     return preference;
 }
 
-int ExpressionEvaluator::calculate(char oprt, int arg1, int arg2)
+int ExpressionEvaluator::calculate(char oprt, int arg2, int arg1)
 {
-   int sol = 0;
+   int sol = 0; //holds solution of single calculation
 
    switch (oprt)
    {
          case '+':
-                 sol = arg1 + arg2;
+                 sol = arg2 + arg1;
                  break;
          case '-':
-                 sol = arg1 - arg2;
+                 sol = arg2 - arg1;
                  break;
          case '*':
-                 sol = arg1 * arg2;
+                 sol = arg2 * arg1;
                  break;
          case '/':
-                 if(arg1 == 0)
+                 if(arg2 == 0)
                  {
                     cout << "cannot divide by zero" << endl;
                     break;
                  }
 
-                 sol = arg1 / arg2;
+                 sol = arg2 / arg1;
 
          default:
          break;
@@ -57,7 +57,7 @@ void ExpressionEvaluator::setArguments()
       char opt = operators._top();
       operators.pop();
 
-      operands.push(calculate(opt, arg1, arg2));
+      operands.push(calculate(opt, arg2, arg1));
 }
 
 void ExpressionEvaluator::solve()

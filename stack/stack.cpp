@@ -5,7 +5,7 @@
  *      Author: Jairo Molina
  *
  *        Purpose: The purpose of this file is to implement the stack prototype
- *                 functions.
+ *                 functions. Commented 'COUT' statements are for unit testing
  */
 
 #include "stack.h"
@@ -35,7 +35,7 @@ template <class T> void Stack<T>::operator=(const Stack<T> &other)
 
 template <class T> bool Stack<T>::isFullStack()
 {
-      return false;                               // stack is technically never full
+      return false;          // stack is technically never full
 }
 
 template <class T> bool Stack<T>::isEmptyStack()

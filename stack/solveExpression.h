@@ -10,6 +10,7 @@
 
 #ifndef SOLVEEXPRESSION_H
 #define SOLVEEXPRESSION_H
+
 #include "stack.cpp"
 
 class ExpressionEvaluator{

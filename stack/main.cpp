@@ -26,11 +26,11 @@ int main() {
             //algorithm library, erases every space in string 'exp'
          exp.erase(remove_if(exp.begin(), exp.end(), ::isspace), exp.end());
 
-         ExpressionEvaluator expression(exp); //sets expression
+         ExpressionEvaluator expression(exp); //sets user's expression
 
          expression.solve(); //solves expression
 
-  } while (exp != "x" && exp != "X");
+  } while (exp != "x" && exp != "X"); //stops when user enters 'x'
 
   cout << "Good bye" << endl;
 
