@@ -303,7 +303,7 @@ public:
 
 //Moves iterator backward
   Iterator operator--() {
-    if (iter != nullptr) {
+    if (iter->next != nullptr) {
       iter = iter->back;
     }
     return iter;

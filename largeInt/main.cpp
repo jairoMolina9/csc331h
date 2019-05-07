@@ -1,19 +1,19 @@
-#include "largeInt.h"
+#include "largeInt.cpp"
 
 int main() {
-  largeInt<int> A;
+  LargeInt<int> A;
   cout << "Enter values: " << endl;
   cin >> A;
-  
-  largeInt<int> B;
+
+  LargeInt<int> B;
   cout << "Enter values (2): " << endl;
   cin >> B;
-  
-  largeInt<int> R;
+
+  LargeInt<int> R;
   cout << "Value -> ";
   R = A+B;
-  cout << "Result: " << endl;  
+  cout << "Result: " << endl;
   R.printValues();
- 
-  
+
+
 }
