@@ -21,27 +21,50 @@ template <class type> class LargeInt {
 private:
   string numbers;
   List<type> list;
+  bool negative;
   typename List<type>::Iterator iter;
 public:
  LargeInt();
 
   friend istream &operator>>( istream  &input, LargeInt<type> &A ) {
         input >> A.numbers;
+        if(A.numbers[0] == '-'){
+            A.numbers.erase(0,1);
+            A.negative = true;
+        }
         A.setNodes();
         return input;
   }
 
-  friend ostream &operator<<( ostream  &output, const LargeInt &A ) { //output the function
-        output << "Numbers: " << A.numbers;
+  friend ostream &operator<<( ostream  &output, LargeInt &A ) { //output the function
+
+         if(A.negative)
+         {
+            output << "Result: -";
+         } else {
+            output << "Result: ";
+         }
+        A.list.printFromFront();
         return output;
      }
 
  void setNodes();
 
- void printValues();
+ int checkCase(bool, bool);
 
  LargeInt<type> operator+( LargeInt<type> &other);
 
+ LargeInt<type> operator-( LargeInt<type> &other);
+
+ bool operator==( LargeInt<type> &other);
+
+ bool operator<(LargeInt<type> &other);
+
+ bool operator>(LargeInt<type> &other);
+
+ bool operator>=(LargeInt<type> &other);
+
+ bool operator<=(LargeInt<type> &other);
 };
 
 

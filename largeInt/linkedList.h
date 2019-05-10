@@ -17,7 +17,7 @@ private:
   Node<type> *head;
   Node<type> *tail;
   int length;
-  
+
   void copyAll(const List &);
   void removeAll();
 
@@ -39,11 +39,11 @@ public:
 
   // Implementation in .cpp
   class Iterator;
-  // sets iterator to head must be const because we 
+  // sets iterator to head must be const because we
   Iterator begin(void) { return Iterator(head); }
 
-  Iterator end(void) { 
-      return Iterator(tail); 
+  Iterator end(void) {
+      return Iterator(tail);
   }
 };
 

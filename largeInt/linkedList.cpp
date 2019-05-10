@@ -147,11 +147,10 @@ template <class type> void List<type>::printFromFront() {
     cerr << "The list is empty" << endl;
     return;
   }
-  int counter = 1; // used to enumarate each node
   for (Node<type> *ptr = head; ptr != nullptr; ptr = ptr->next) {
-    cout << "NODE [" << counter++ << "] -> ";
-    cout << ptr->value << endl;
+    cout << ptr->value;
   }
+  cout << endl;
 }
 
 /* Prints from back->front */
@@ -286,7 +285,7 @@ public:
 
 //Moves iterator forward
   Iterator operator++() {
-    if (iter->next != nullptr) {
+    if (iter != nullptr) {
       iter = iter->next;
     }
     return iter;
@@ -297,13 +296,15 @@ public:
     type value;
     if (iter != nullptr) {
       value = iter->value;
+    } else {
+        value = 0;
     }
     return value; //return current iterator value
   }
 
 //Moves iterator backward
   Iterator operator--() {
-    if (iter->next != nullptr) {
+    if (iter != nullptr) {
       iter = iter->back;
     }
     return iter;
