@@ -19,7 +19,8 @@ private:
   int length;
 
   void copyAll(const List &);
-
+  void removeAll();
+  
 public:
   List();
   ~List();
@@ -29,10 +30,11 @@ public:
   void insert_front(type);
   void insert_back(type);
   void deleteFromFront();
-  void removeAll();
+  
   void printFromFront();
   void printFromBack();
   void printEdges();
+  
   bool isEmpty();
   bool delete_item(type);
   bool search(type);
@@ -40,7 +42,7 @@ public:
 
   // Implementation in .cpp
   class Iterator;
-  // sets iterator to head must be const because we
+  
   Iterator begin(void) { return Iterator(head); }
 
   Iterator end(void) {
