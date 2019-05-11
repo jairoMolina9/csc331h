@@ -39,9 +39,9 @@ friend istream &operator>>( istream  &input, LargeInt<type> &A ) {
 friend ostream &operator<<( ostream  &output, LargeInt &A ) { //output the function
     if(A.negative)
     {
-        output << "Result: -";
+        output << "\tResult: -";
     } else {
-        output << "Result: ";
+        output << "\tResult: ";
     }
     A.list.printFromFront();
     return output;
@@ -51,6 +51,7 @@ void setNodes();
 
 int checkCase(bool, bool);
 
+/* RETURN largeint OBJECT with RESULT*/
 LargeInt<type> operator+( LargeInt<type> &);
 
 LargeInt<type> operator-( LargeInt<type> &);
@@ -61,8 +62,10 @@ LargeInt<type> operator/( LargeInt<type> &);
 
 LargeInt<type> operator%( LargeInt<type> &);
 
+/* GETS RIDS OFF EXTRA ZEROS */
 void cleanResult(LargeInt<type>&);
 
+/* RETURN bool OUTPUT */
 bool operator!=(LargeInt<type> &);
 
 bool operator==( LargeInt<type> &);
