@@ -1,112 +1,172 @@
+/*
+   Jairo Molina
+   molinaandres9991@gmail.com
+   CSC 331H. Prof Salvatti
+   LargeInt Project
+   "main.cpp"
+   --------------------------------------------
+               <In this File>
+   Two menus to test large int arithmetic and 
+   conditional expressions:
+   - R = A + B
+   - R = A - B
+   - R = A * B
+   - R = A / B
+   - R = A % B
+   - > , < , <= , >= , ==
+ *
+   --------------------------------------------
+*/
+
 #include "largeInt.cpp"
 
+void calc(int);
 void menu_2();
 void menu(char);
 void setNumbers(LargeInt<int>&, LargeInt<int>&);
 
+
 int main() {
-char option = '0';  //default
+char option;
 
 do{
 
-   menu(option);
-
+  
+   string text = "1.Add\n2.Subtract\n3.Multiply\n4.Divide\n5.Modulus\n6.Conditions\n0.Exit\n";
+   cout << text << "Enter: ";
+   
    cin >> option;
+   
+   menu(option);
+   
+}while (option != '0');
 
-}while (option != 0);
+cout << "GOODBYE" << endl;
 
-
-  // LargeInt<int> A;
-  // cout << "Enter values List A: " << endl;
-  // cin >> A;
-  //
-  //
-  // LargeInt<int> B;
-  // cout << "Enter values List B: " << endl;
-  // cin >> B;
-  //
-  //  LargeInt<int> R;
-  //  R = A%B;
-  //  cout << R;
-
-// if(A==B)
-//     cout << "\nEqual" << endl;
-//
-// if(A<B)
-//     cout << "\nLess" << endl;
-
-// if(A>B)
-//     cout << "\nBigger" << endl;
-
-// if(A>=B)
-//     cout << "\nBigger or Equal" << endl;
-//
-// if(A<=B)
-//     cout << "\nLess or Equal" << endl;
 }
 
-void add(){
-   cout << "\n\tADDITION\t" << endl;
-   LargeInt<int> A;
-   LargeInt<int> B;
-   LargeInt<int> R;
 
-   setNumbers(A, B);
-
-   R = A+B;
-   cout << R;
-}
-
+/* INSERT VALUES */
 void setNumbers(LargeInt<int>& A, LargeInt<int>& B){
-   cout << "\nEnter values List A: " << endl;
+   cout << "\nFirst enter values List 1: " << endl;
    cin >> A;
 
-   cout << "\nEnter values List B: " << endl;
+   cout << "\nFirst enter values List 2: " << endl;
    cin >> B;
 }
 
+/* PERFORMS SPECIFIC EXPRESSION */
+void calc(int opt){
+   
+   LargeInt<int> A;
+   LargeInt<int> B;
+   
+   LargeInt<int> R;
+
+   setNumbers(A, B);
+   
+   switch(opt){
+       case '1':
+           cout << "\n\tADDITION\t" << endl;
+            R = A+B;
+            cout << R;
+            break;
+       case '2':
+           cout << "\n\tSUBTRACTION\t" << endl;
+           R = A-B;
+           cout << R;
+           break;
+       case '3':
+           cout << "\n\tMULTIPLY\t" << endl;
+           R = A*B;
+           cout << R;
+           break;
+       case '4':
+           cout << "\n\tDIVIDE\t" << endl;
+           R = A/B;
+           cout << R;
+           break;
+       case '5':
+           cout << "\n\tMODULUS\t" << endl;
+           R = A%B;
+           cout << R;
+           break;
+       case '6':
+           menu_2();
+       default:
+           break;
+   }
+}
+
+/* DISPLAYS ARITHMETIC MENU */
 void menu(char opt){
-   string text = "1.Add\n2.Subtract\n3.Multiply\n4.Divide\n5.Modulus\n6.Conditions\n0.Exit\n";
-   cout << text << "Enter: ";
 
    switch(opt){
       case '1':
-      add();
-      break;
+          calc(opt);
+          break;
       case '2':
-      break;
+          calc(opt);
+          break;
       case '3':
-      break;
+          calc(opt);
+          break;
       case '4':
-      break;
+          calc(opt);
+          break;
       case '5':
-      break;
+          calc(opt);
+          break;
       case '6':
-      menu_2();
+          menu_2();
       default:
-      break;
+          break;
 
    }
 
 }
 
+/* DISPLAYS CONDITIONS MENU */
 void menu_2(){
-   char opt = 'D';//default
-   string text = "1. >\n2. <\n3. >=\n 4. <=\n 5. ==\n0.Back\n";
-   cout << text << "Enter: ";
+    
+   LargeInt<int> A;
+   LargeInt<int> B;
 
+   setNumbers(A, B);
+   
+   char opt;
+   string out;
+    
+ 
+   
+   do{  
+       string text = "1. >\n2. <\n3. >=\n4. <=\n5. ==\n0.Back\n";
+   cout << text << "Enter: ";
+   
+   cin >> opt;
+       
    switch(opt){
       case '1':
+          (A>B) ? out = "A bigger than B" : out = "A not bigger than B";
       break;
       case '2':
+          (A<B) ? out = "A less than B" : out = "A not less than B";
       break;
       case '3':
+          (A>=B) ? out = "A bigger/equal than B" : out = "A not bigger/equal than B";
       break;
       case '4':
+          (A<=B) ? out = "A less/equal than B" : out = "A not less/equal than B";
       break;
       case '5':
+          (A==B) ? out = "A equal than B" : out = "A equal than B";
       default:
       break;
    }
+   
+   cout << "\t" << out << endl;
+   }while( opt != '0');
+   
+   
 
 }
