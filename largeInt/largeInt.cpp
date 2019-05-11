@@ -239,7 +239,7 @@ template <class type> LargeInt<type> LargeInt<type>::operator*( LargeInt<type> &
     /* set negative signs to false*/
     negative = false;
     multiplier.negative = false;
-    
+
     while(counter < multiplier){
 
         counter = counter + dummy;
@@ -272,19 +272,45 @@ template <class type> LargeInt<type> LargeInt<type>::operator/( LargeInt<type> &
        quotient.list.insert_front(1);
     } else {
 
+
+   cout << "before turn;";
     while(remainder > divisor){
 
         remainder = remainder - divisor;
 
         quotient = quotient + dummy;
-
     }
     }
     if(case_numb == 1 || case_numb == 2)
         quotient.negative = true;
 
-
     return quotient;
+}
+
+/* Modolus */
+template <class type> LargeInt<type> LargeInt<type>::operator%( LargeInt<type> &divisor) {
+
+   LargeInt<type> remainder = *this;
+
+   LargeInt<type> dummy;
+   dummy.list.insert_front(1);
+
+   int case_numb = checkCase(this->negative, divisor.negative);
+
+   remainder.negative = false;
+   divisor.negative = false;
+
+   while(remainder > divisor){
+
+      remainder = remainder - divisor;
+
+   }
+
+   if(case_numb == 1 || case_numb == 2)
+      remainder.negative = true;
+
+   return remainder;
+
 }
 
 /* Equal */
@@ -294,9 +320,11 @@ template <class type> bool LargeInt<type>::operator==( LargeInt<type> &other){
     if(list.get_length() == other.list.get_length()) {
 
         while(iter != nullptr ) {
+          // cout << "here";
             if( *iter != *(other.iter) ) {
+               //cout << "here1";
                 equal = false;
-                break;
+                return equal;
             }
             --iter;
             --(other.iter);
@@ -370,7 +398,7 @@ template <class type> bool LargeInt<type>::operator>( LargeInt<type> &other) {
        } else if (this->list.get_length() > other.list.get_length()) {
            bigger = true;
        } else if ( *this == other ){
-           bigger = false;
+          bigger = false;
        }else {
 
            iter = list.begin();

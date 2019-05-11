@@ -47,31 +47,33 @@ friend ostream &operator<<( ostream  &output, LargeInt &A ) { //output the funct
     return output;
   }
 
- void setNodes();
+void setNodes();
 
- int checkCase(bool, bool);
+int checkCase(bool, bool);
 
- LargeInt<type> operator+( LargeInt<type> &);
+LargeInt<type> operator+( LargeInt<type> &);
 
- LargeInt<type> operator-( LargeInt<type> &);
- 
- LargeInt<type> operator*( LargeInt<type> &);
- 
- LargeInt<type> operator/( LargeInt<type> &);
- 
- void cleanResult(LargeInt<type>&);
+LargeInt<type> operator-( LargeInt<type> &);
 
- bool operator!=(LargeInt<type> &);
- 
- bool operator==( LargeInt<type> &);
+LargeInt<type> operator*( LargeInt<type> &);
 
- bool operator<(LargeInt<type> &);
+LargeInt<type> operator/( LargeInt<type> &);
 
- bool operator>(LargeInt<type> &);
+LargeInt<type> operator%( LargeInt<type> &);
 
- bool operator>=(LargeInt<type> &);
+void cleanResult(LargeInt<type>&);
 
- bool operator<=(LargeInt<type> &);
+bool operator!=(LargeInt<type> &);
+
+bool operator==( LargeInt<type> &);
+
+bool operator<(LargeInt<type> &);
+
+bool operator>(LargeInt<type> &);
+
+bool operator>=(LargeInt<type> &);
+
+bool operator<=(LargeInt<type> &);
 };
 
 
