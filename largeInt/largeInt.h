@@ -26,45 +26,52 @@ private:
 public:
  LargeInt();
 
-  friend istream &operator>>( istream  &input, LargeInt<type> &A ) {
-        input >> A.numbers;
-        if(A.numbers[0] == '-'){
-            A.numbers.erase(0,1);
-            A.negative = true;
-        }
-        A.setNodes();
-        return input;
+friend istream &operator>>( istream  &input, LargeInt<type> &A ) {
+    input >> A.numbers;
+    if(A.numbers[0] == '-'){
+        A.numbers.erase(0,1);
+        A.negative = true;
+    }
+    A.setNodes();
+    return input;
+}
+
+friend ostream &operator<<( ostream  &output, LargeInt &A ) { //output the function
+    if(A.negative)
+    {
+        output << "Result: -";
+    } else {
+        output << "Result: ";
+    }
+    A.list.printFromFront();
+    return output;
   }
-
-  friend ostream &operator<<( ostream  &output, LargeInt &A ) { //output the function
-
-         if(A.negative)
-         {
-            output << "Result: -";
-         } else {
-            output << "Result: ";
-         }
-        A.list.printFromFront();
-        return output;
-     }
 
  void setNodes();
 
  int checkCase(bool, bool);
 
- LargeInt<type> operator+( LargeInt<type> &other);
+ LargeInt<type> operator+( LargeInt<type> &);
 
- LargeInt<type> operator-( LargeInt<type> &other);
+ LargeInt<type> operator-( LargeInt<type> &);
+ 
+ LargeInt<type> operator*( LargeInt<type> &);
+ 
+ LargeInt<type> operator/( LargeInt<type> &);
+ 
+ void cleanResult(LargeInt<type>&);
 
- bool operator==( LargeInt<type> &other);
+ bool operator!=(LargeInt<type> &);
+ 
+ bool operator==( LargeInt<type> &);
 
- bool operator<(LargeInt<type> &other);
+ bool operator<(LargeInt<type> &);
 
- bool operator>(LargeInt<type> &other);
+ bool operator>(LargeInt<type> &);
 
- bool operator>=(LargeInt<type> &other);
+ bool operator>=(LargeInt<type> &);
 
- bool operator<=(LargeInt<type> &other);
+ bool operator<=(LargeInt<type> &);
 };
 
 

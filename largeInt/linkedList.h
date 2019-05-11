@@ -19,7 +19,6 @@ private:
   int length;
 
   void copyAll(const List &);
-  void removeAll();
 
 public:
   List();
@@ -29,6 +28,8 @@ public:
 
   void insert_front(type);
   void insert_back(type);
+  void deleteFromFront();
+  void removeAll();
   void printFromFront();
   void printFromBack();
   void printEdges();

@@ -128,6 +128,25 @@ template <class type> void List<type>::insert_back(type info) {
  // cout << "Value inserted into Node[" << length << "]\n" << endl;
 }
 
+/* Deletes front value */
+template <class type> void List<type>::deleteFromFront(){
+    Node<type> *dummy;
+    
+    if(isEmpty()){
+        cout << "List is empty, nothing to delete" << endl;
+    } else if (length == 1) {
+        head = tail = nullptr;
+        //cout << "List is empty" << endl;
+        length--;
+    } else {
+        dummy = head;
+        head = head->next;
+        head->back = nullptr;
+        --length;
+        delete dummy;
+    }
+}
+
 /* Removes every node front->back in a list */
 template <class type> void List<type>::removeAll() {
   Node<type> *walker;
@@ -147,6 +166,7 @@ template <class type> void List<type>::printFromFront() {
     cerr << "The list is empty" << endl;
     return;
   }
+  
   for (Node<type> *ptr = head; ptr != nullptr; ptr = ptr->next) {
     cout << ptr->value;
   }
