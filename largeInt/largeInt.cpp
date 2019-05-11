@@ -38,8 +38,15 @@ template <class type> void LargeInt<type>::setNodes() {
 /* Check negative case */
 template <class type> int LargeInt<type>::checkCase(bool negA, bool negB){
     int case_numb = 0;
-
-    if(!negA && negB)
+    
+    /*
+      Check sign
+      Case 1: ( + ) ( - )
+      Case 2: ( - ) ( + )
+      Case 3: ( - ) ( - )
+    */
+    
+    if(!negA && negB) 
         case_numb = 1;
 
    if(negA && !negB)
@@ -69,88 +76,105 @@ template <class type> void LargeInt<type>::cleanResult( LargeInt<type> &result){
 template <class type> LargeInt<type> LargeInt<type>::operator+( LargeInt<type> &addend_2) {
     iter = list.end();
     addend_2.iter = addend_2.list.end();
-  LargeInt<type> sum;
-  LargeInt<type> addend_1 = *this;
-
-  int case_numb = checkCase(this->negative, addend_2.negative);
-
+    
+    LargeInt<type> sum;
+    LargeInt<type> addend_1 = *this;
+    
+    int case_numb = checkCase(this->negative, addend_2.negative);
+    
+    /*
+      Check sign
+      Case 1: ( + ) ( - )
+      Case 2: ( - ) ( + )
+      Case 3: ( - ) ( - )
+    */
+    
     if(case_numb == 1){
         addend_2.negative = false;
         sum = addend_1 - addend_2;
+    
     } else if ( case_numb == 2) {
         addend_1.negative = false;
         sum = addend_2 - addend_1;
-
+        
         if(addend_1 <= addend_2){
-        sum.negative = false;
+            sum.negative = false;
         } else {
             sum.negative = true;
         }
-
+    
     } else if ( case_numb == 3){
         addend_2.negative = false;
         sum = addend_1 - addend_2;
+    
     } else {
-
-  int result = 0;
-  int carry = 0;
-
-
-  while(iter != nullptr || addend_2.iter != nullptr){
-
-     /*adding nodes
-      case 1: list2 is traversed fully
-      case 2: list1 is traversed fully
-      case 3: traverse both lists
-    */
-     if(addend_2.iter == nullptr){
-        result = (*iter + carry);
-        --iter; //move list A iter
-     }
-     else if(iter == nullptr) {
-        result = *(addend_2.iter) + carry;
-        --(addend_2.iter); //move list B iter
-     }
-     else{
-        result = (*(addend_2.iter) + *iter) + carry;
-        --iter;
-        --(addend_2.iter);
-     }
-
-     /*addition results
-      case 1: result is double digit
-      case 2: result is single digit
-     */
-     if(result > 9){
-        carry = 1;//always 1, max is 9+9 = '1''8'
-        sum.list.insert_front(result-10);//insert single digit
-     } else {
-         carry = 0;
-        sum.list.insert_front(result);
-     }
-
-  }
-
-  /* Check if 9 is the first value in the lists*/
-  iter = list.begin();
-  addend_2.iter = addend_2.list.begin();
-
-  if(carry == 1){
-      if(!this->negative && !addend_2.negative){
-      sum.list.insert_front(1); //inserts 1 in front
-      }
-  }
+        
+        int result = 0;
+        int carry = 0;
+        
+        while(iter != nullptr || addend_2.iter != nullptr){
+            
+            /*
+              adding nodes
+              case 1: ONLY check RIGHT list
+              case 2: ONLY check LET list
+              case 3: CHECK both lists
+            */
+            
+            if(addend_2.iter == nullptr){
+                result = (*iter + carry);
+                --iter; //move right list iterator
+            
+            } else if(iter == nullptr) {
+                result = *(addend_2.iter) + carry;
+                --(addend_2.iter); //move left list iterator
+            
+            } else{
+                result = (*(addend_2.iter) + *iter) + carry;
+                --iter;
+                --(addend_2.iter);
+            }
+            
+            /*
+              addition results
+              case 1: result is double digit
+              case 2: result is single digit
+            */
+            
+            if(result > 9){
+                carry = 1;//always 1, max is 9+9 = '1''8'
+                sum.list.insert_front(result-10);//insert single digit
+            
+            } else {
+                carry = 0;
+                sum.list.insert_front(result);
+            }
+        }
+        
+        if(carry == 1){
+            //if both are not negative
+            if(!this->negative && !addend_2.negative){
+                sum.list.insert_front(1); //inserts 1 in front
+            }
+        }
     }
-
- return sum;
+    return sum;
 }
 
 /* Subtract */
 template <class type> LargeInt<type> LargeInt<type>::operator-( LargeInt<type> &subtrahend) {
     LargeInt<type> difference;
     LargeInt<type> minuend = *this;
+    
     int case_numb = checkCase(this->negative, subtrahend.negative);
-
+    
+    /*
+      Check sign
+      Case 1: ( + ) ( - )
+      Case 2: ( - ) ( + )
+      Case 3: ( - ) ( - )
+    */
+    
     if(case_numb == 1){
         subtrahend.negative = false;
         difference = minuend + subtrahend;
@@ -162,81 +186,88 @@ template <class type> LargeInt<type> LargeInt<type>::operator-( LargeInt<type> &
         subtrahend.negative = false;
         difference = minuend + subtrahend;
     } else {
-
-    /* Variables needed */
-    int diff = 0; //difference between two single digits
-    int carry = 0;
-    int exp = 0; //adds 10 to minuend if needed
-    bool neg = false;
-
-    /* Finds if output will be negative
-     Case 1: Same length, but listA head->info < listB head->info
-     Case 2: Length from listA < listB
-     */
-
-    if( subtrahend > *this)
-        neg = true;
-
-    /* Compute subtraction
-     Case 1: Swich List A and List B, negative output
-     Case 2: Normal Subtraction
-     */
-    if(neg){
-        difference = subtrahend - *this;
-        difference.negative = true;
-
-    } else {
-    while(iter != nullptr || subtrahend.iter != nullptr){
-        //cout << "in -";
-         if (carry == 1 && (*iter == *(subtrahend.iter)) ){
-            diff = 9;
-          //  cout << "diff1: " << diff;
-            carry = 1;
-        }else if(*iter >= *(subtrahend.iter)) {
-            exp = 0;
-            diff = ((*iter - carry) + exp) - *(subtrahend.iter);
-           // cout << "diff1: " << diff;
-            carry = 0;
-        } else if (*iter < *(subtrahend.iter)){
-            exp = 10;
-            diff = ((*iter - carry) + exp) - *(subtrahend.iter);
-           // cout << "diff1: " << diff;
-            carry = 1;
-        }
-
-         //cout << "diff r: " << diff;
-        difference.list.insert_front(diff);
-
-        if(iter == nullptr){
-            --(subtrahend.iter);
-        } else if ((subtrahend.iter) == nullptr) {
-            --iter;
+        
+        int diff = 0; //difference between two single digits
+        int carry = 0;
+        int exp = 0; //adds 10 to minuend if needed
+        bool neg = false;
+        
+        //Checks if output will be negative
+        if( subtrahend > *this)
+            neg = true;
+        
+        /*
+          Compute subtraction
+          Case 1: Negative Subtraction
+          Case 2: Normal Subtraction
+        */
+        if(neg){
+            difference = subtrahend - *this;
+            difference.negative = true;
+        
         } else {
-            --iter;
-            --(subtrahend.iter);
+            
+            while(iter != nullptr || subtrahend.iter != nullptr){
+                
+                /*
+                  Compute subtraction
+                  Case 1: Carry is set and both digit are equal
+                  Case 2: RIGHT digit >= LEFT digit
+                  Case 3: RIGHT digit < LEFT digit
+                 */
+                if (carry == 1 && (*iter == *(subtrahend.iter)) ){
+                    diff = 9;
+                    carry = 1;
+                
+                }else if(*iter >= *(subtrahend.iter)) {
+                    exp = 0;
+                    diff = ((*iter - carry) + exp) - *(subtrahend.iter);
+                    carry = 0;
+                
+                } else if (*iter < *(subtrahend.iter)){
+                    exp = 10;
+                    diff = ((*iter - carry) + exp) - *(subtrahend.iter);
+                    carry = 1;
+                }
+                
+                difference.list.insert_front(diff);
+                
+                /*
+                  Move iterators
+                  Case 1: ONLY move RIGHT iterator
+                  Case 2: ONLY move LEFT iterator
+                  Case 3: BOTH iterators move
+               */
+                if(iter == nullptr){
+                    --(subtrahend.iter);
+                } else if ((subtrahend.iter) == nullptr) {
+                    --iter;
+                } else {
+                    --iter;
+                    --(subtrahend.iter);
+                }
+            }
         }
-     }
     }
-   }
+    
     cleanResult(difference);
     return difference;
 }
 
 /* Multiply */
 template <class type> LargeInt<type> LargeInt<type>::operator*( LargeInt<type> &multiplier) {
-
+    
     LargeInt<type> product = *this;
+    
     LargeInt<type> counter;
+    counter.list.insert_front(2);//default start at 2
 
-    //counter starts from 2 because 1 is the same as this
-    counter.list.insert_front(2);
-
-    LargeInt<type> dummy;
-    dummy.list.insert_front(1); //adds 1 to counter
+    LargeInt<type> dummy; //used to add 1 to counter
+    dummy.list.insert_front(1);
 
     int case_numb = checkCase(this->negative, multiplier.negative);
 
-    /* set negative signs to false*/
+    /* set negative signs to false, easier computation*/
     negative = false;
     multiplier.negative = false;
 
@@ -245,10 +276,13 @@ template <class type> LargeInt<type> LargeInt<type>::operator*( LargeInt<type> &
         counter = counter + dummy;
 
         product = product + *this;
-        cout << product;
+        //cout << product;
     }
 
-    /* We check if the case number corresponds to a negative result */
+    /*
+      Check sign
+      Case 1: ( - ) * ( - ) = + 
+    */
     if(case_numb == 1 || case_numb == 2)
         product.negative = false;
 
@@ -257,33 +291,37 @@ template <class type> LargeInt<type> LargeInt<type>::operator*( LargeInt<type> &
 
 /* Divide */
 template <class type> LargeInt<type> LargeInt<type>::operator/( LargeInt<type> &divisor) {
+    
     LargeInt<type> remainder = *this;
     LargeInt<type> quotient;
 
-    LargeInt<type> dummy;
+    LargeInt<type> dummy;//used to add 1 to quotient
     dummy.list.insert_front(1);
 
     int case_numb = checkCase(this->negative, divisor.negative);
 
+    /* set negative signs to false, easier computation*/
     remainder.negative = false;
     divisor.negative = false;
 
     if(remainder == divisor){
        quotient.list.insert_front(1);
     } else {
-
-
-   cout << "before turn;";
-    while(remainder > divisor){
-
-        remainder = remainder - divisor;
-
-        quotient = quotient + dummy;
+        
+        while(remainder > divisor){
+            remainder = remainder - divisor;
+            quotient = quotient + dummy;
+        }
     }
-    }
+    
+    /*
+      Check sign
+      Case 1: ( - ) % ( + ) = -
+      Case 2: ( + ) % ( - ) = - 
+    */
     if(case_numb == 1 || case_numb == 2)
         quotient.negative = true;
-
+    
     return quotient;
 }
 
@@ -297,6 +335,7 @@ template <class type> LargeInt<type> LargeInt<type>::operator%( LargeInt<type> &
 
    int case_numb = checkCase(this->negative, divisor.negative);
 
+   /* set negative signs to false, easier computation*/
    remainder.negative = false;
    divisor.negative = false;
 
@@ -305,7 +344,12 @@ template <class type> LargeInt<type> LargeInt<type>::operator%( LargeInt<type> &
       remainder = remainder - divisor;
 
    }
-
+   
+    /*
+      Check sign
+      Case 1: ( - ) % ( + ) = -
+      Case 2: ( + ) % ( - ) = - 
+    */
    if(case_numb == 1 || case_numb == 2)
       remainder.negative = true;
 
@@ -316,22 +360,23 @@ template <class type> LargeInt<type> LargeInt<type>::operator%( LargeInt<type> &
 /* Equal */
 template <class type> bool LargeInt<type>::operator==( LargeInt<type> &other){
     bool equal = true;
-   // cout << " == ";
+    
     if(list.get_length() == other.list.get_length()) {
-
+        
         while(iter != nullptr ) {
-          // cout << "here";
+            
             if( *iter != *(other.iter) ) {
-               //cout << "here1";
                 equal = false;
                 return equal;
             }
             --iter;
             --(other.iter);
         }
+    
     } else {
         equal = false;
     }
+    
     return equal;
 }
 
@@ -343,40 +388,43 @@ template <class type> bool LargeInt<type>::operator<( LargeInt<type> &other) {
     int case_numb = checkCase(this->negative, other.negative);
 
     if(case_numb == 1){
-      less = false;
-   } else if(case_numb == 2){
-      //do nothing
-   } else {
+        less = false;
+    
+    } else if(case_numb == 2){
+        //do nothing
+    
+    } else {
+        
         if(this->list.get_length() < other.list.get_length() ){
            less = true;
-       } else if (this->list.get_length() > other.list.get_length()) {
+        } else if (this->list.get_length() > other.list.get_length()) {
            less = false;
-       } else {
-
-           iter = list.begin();
-           other.iter = other.list.begin();
-
-           for(int i = 0; i < list.get_length(); i++){
-
-               if( *iter < *(other.iter)){
-                   less = true;
-                   break;
-               } else if ( *iter == *(other.iter)){
-                   less = true;
-               } else if( *iter > *(other.iter )) {
-                   less = false;
-                   break;
-               }
-
-               ++iter;
-               ++(other.iter);
-
-           }
-
-       }
-   }
-        iter = list.end();
+        } else {
+            
+            iter = list.begin();
+            other.iter = other.list.begin();
+            
+            for(int i = 0; i < list.get_length(); i++){
+                
+                if( *iter < *(other.iter)){
+                    less = true;
+                    break;
+                } else if ( *iter == *(other.iter)){
+                    less = true;
+                } else if( *iter > *(other.iter )) {
+                    less = false;
+                    break;
+                }
+                
+                ++iter;
+                ++(other.iter);
+            }
+        }
+    }
+    
+    iter = list.end();
     other.iter = other.list.end();
+   
     return less;
 }
 
@@ -388,47 +436,48 @@ template <class type> bool LargeInt<type>::operator>( LargeInt<type> &other) {
     int case_numb = checkCase(this->negative, other.negative);
 
     if(case_numb == 1){
-      //do nothing
-   } else if(case_numb == 2){
-      bigger = false;
-   } else {
-       //cout << "in >";
-       if(this->list.get_length() < other.list.get_length() ){
-           bigger = false;
-       } else if (this->list.get_length() > other.list.get_length()) {
-           bigger = true;
-       } else if ( *this == other ){
-          bigger = false;
-       }else {
-
-           iter = list.begin();
-           other.iter = other.list.begin();
-
-
-           while(iter != nullptr ){
-
-               if(*iter == *(other.iter) ){
-                  // cout << " > 1 ";
-                     bigger = true;
-
-               } else if(*iter < *(other.iter)){
-                 //  cout << " > 2 ";
-                   bigger = false;
-                   break;
-               } else if ( *iter > *(other.iter)) {
-                //   cout << " > 3 ";
-                   bigger= true;
-                   break;
-               }
-
-               ++iter;
-               ++(other.iter);
-
-           }
-       }
-}
-
-
+        //do nothing
+    
+    } else if(case_numb == 2){
+        bigger = false;
+    
+    } else {
+        
+        if(this->list.get_length() < other.list.get_length() ){
+            bigger = false;
+        
+        } else if (this->list.get_length() > other.list.get_length()) {
+            bigger = true;
+        
+        } else if ( *this == other ){
+            bigger = false;
+        
+        }else {
+            
+            iter = list.begin();
+            other.iter = other.list.begin();
+            
+            while(iter != nullptr ){
+                
+                if(*iter == *(other.iter) ){
+                    
+                    bigger = true;
+                
+                } else if(*iter < *(other.iter)){
+                    bigger = false;
+                    break;
+                
+                } else if ( *iter > *(other.iter)) {
+                    bigger= true;
+                    break;
+                }
+                
+                ++iter;
+                ++(other.iter);
+            }
+        }
+    }
+    
     iter = list.end();
     other.iter = other.list.end();
 
