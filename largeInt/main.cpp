@@ -18,12 +18,12 @@
    --------------------------------------------
 */
 
-#include "largeInt.cpp"
+#include "largeInt.h"
 
 void calc(int);
 void menu_2();
 void menu(char);
-void setNumbers(LargeInt<int>&, LargeInt<int>&);
+void setNumbers(LargeInt&, LargeInt&);
 
 
 int main() {
@@ -47,7 +47,7 @@ cout << "GOODBYE" << endl;
 
 
 /* INSERT VALUES */
-void setNumbers(LargeInt<int>& A, LargeInt<int>& B){
+void setNumbers(LargeInt& A, LargeInt& B){
    cout << "\nFirst enter values List 1: " << endl;
    cin >> A;
 
@@ -58,10 +58,10 @@ void setNumbers(LargeInt<int>& A, LargeInt<int>& B){
 /* PERFORMS SPECIFIC EXPRESSION */
 void calc(int opt){
    
-   LargeInt<int> A;
-   LargeInt<int> B;
+   LargeInt A;
+   LargeInt B;
    
-   LargeInt<int> R;
+   LargeInt R;
 
    setNumbers(A, B);
    
@@ -129,8 +129,8 @@ void menu(char opt){
 /* DISPLAYS CONDITIONS MENU */
 void menu_2(){
     
-   LargeInt<int> A;
-   LargeInt<int> B;
+   LargeInt A;
+   LargeInt B;
 
    setNumbers(A, B);
    
@@ -159,7 +159,7 @@ void menu_2(){
           (A<=B) ? out = "A less/equal than B" : out = "A not less/equal than B";
       break;
       case '5':
-          (A==B) ? out = "A equal than B" : out = "A equal than B";
+          (A==B) ? out = "A equal than B" : out = "A not equal than B";
       default:
       break;
    }
