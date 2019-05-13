@@ -21,14 +21,14 @@
 #include "largeInt.h"
 
 /* Default Constructor */
-template <class type> LargeInt<type>::LargeInt() {
+ LargeInt::LargeInt() {
   numbers = "";
   iter = nullptr;
   negative = false;
 }
 
 /* Set string to individual nodes */
-template <class type> void LargeInt<type>::setNodes() {
+ void LargeInt::setNodes() {
   for (int i = 0; i < numbers.length(); i++) {
     list.insert_back(numbers[i] - '0');
   }
@@ -36,7 +36,7 @@ template <class type> void LargeInt<type>::setNodes() {
 }
 
 /* Check negative case */
-template <class type> int LargeInt<type>::checkCase(bool negA, bool negB){
+ int LargeInt::checkCase(bool negA, bool negB){
     int case_numb = 0;
     
     /*
@@ -59,7 +59,7 @@ template <class type> int LargeInt<type>::checkCase(bool negA, bool negB){
 }
 
 /* Gets Rids of zeros*/
-template <class type> void LargeInt<type>::cleanResult( LargeInt<type> &result){
+ void LargeInt::cleanResult( LargeInt &result){
     result.iter = result.list.begin();
 
     if(result.list.get_length() > 1) {
@@ -73,12 +73,12 @@ template <class type> void LargeInt<type>::cleanResult( LargeInt<type> &result){
 }
 
 /* Addition */
-template <class type> LargeInt<type> LargeInt<type>::operator+( LargeInt<type> &addend_2) {
+ LargeInt LargeInt::operator+( LargeInt &addend_2) {
     iter = list.end();
     addend_2.iter = addend_2.list.end();
     
-    LargeInt<type> sum;
-    LargeInt<type> addend_1 = *this;
+    LargeInt sum;
+    LargeInt addend_1 = *this;
     
     int case_numb = checkCase(this->negative, addend_2.negative);
     
@@ -94,6 +94,12 @@ template <class type> LargeInt<type> LargeInt<type>::operator+( LargeInt<type> &
         sum = addend_1 - addend_2;
     
     } else if ( case_numb == 2) {
+        
+        if(*this == addend_2){
+            sum.list.insert_front(0);
+            return sum;
+        }
+        
         addend_1.negative = false;
         sum = addend_2 - addend_1;
         
@@ -162,9 +168,9 @@ template <class type> LargeInt<type> LargeInt<type>::operator+( LargeInt<type> &
 }
 
 /* Subtract */
-template <class type> LargeInt<type> LargeInt<type>::operator-( LargeInt<type> &subtrahend) {
-    LargeInt<type> difference;
-    LargeInt<type> minuend = *this;
+ LargeInt LargeInt::operator-( LargeInt &subtrahend) {
+    LargeInt difference;
+    LargeInt minuend = *this;
     
     int case_numb = checkCase(this->negative, subtrahend.negative);
     
@@ -255,19 +261,21 @@ template <class type> LargeInt<type> LargeInt<type>::operator-( LargeInt<type> &
 }
 
 /* Multiply */
-template <class type> LargeInt<type> LargeInt<type>::operator*( LargeInt<type> &multiplier) {
+ LargeInt LargeInt::operator*( LargeInt &multiplier) {
     
-    LargeInt<type> product = *this;
+    LargeInt product = *this;
     
-    LargeInt<type> counter;
+    LargeInt counter;
     counter.list.insert_front(2);//default start at 2
 
-    LargeInt<type> dummy; //used to add 1 to counter
+    LargeInt dummy; //used to add 1 to counter
     dummy.list.insert_front(1);
 
     int case_numb = checkCase(this->negative, multiplier.negative);
 
     /* set negative signs to false, easier computation*/
+    product.negative = false;
+    counter.negative = false;
     negative = false;
     multiplier.negative = false;
 
@@ -281,21 +289,22 @@ template <class type> LargeInt<type> LargeInt<type>::operator*( LargeInt<type> &
 
     /*
       Check sign
-      Case 1: ( - ) * ( - ) = + 
+      Case 1: ( - ) * ( + ) = - 
+      Case 2: ( + ) * ( - ) = -
     */
-    if(case_numb == 1 || case_numb == 2)
-        product.negative = false;
+    if(case_numb == 2 || case_numb == 1)
+        product.negative = true;
 
     return product;
 }
 
 /* Divide */
-template <class type> LargeInt<type> LargeInt<type>::operator/( LargeInt<type> &divisor) {
+ LargeInt LargeInt::operator/( LargeInt &divisor) {
     
-    LargeInt<type> remainder = *this;
-    LargeInt<type> quotient;
+    LargeInt remainder = *this;
+    LargeInt quotient;
 
-    LargeInt<type> dummy;//used to add 1 to quotient
+    LargeInt dummy;//used to add 1 to quotient
     dummy.list.insert_front(1);
 
     int case_numb = checkCase(this->negative, divisor.negative);
@@ -326,11 +335,11 @@ template <class type> LargeInt<type> LargeInt<type>::operator/( LargeInt<type> &
 }
 
 /* Modolus */
-template <class type> LargeInt<type> LargeInt<type>::operator%( LargeInt<type> &divisor) {
+ LargeInt LargeInt::operator%( LargeInt &divisor) {
 
-   LargeInt<type> remainder = *this;
+   LargeInt remainder = *this;
 
-   LargeInt<type> dummy;
+   LargeInt dummy;
    dummy.list.insert_front(1);
 
    int case_numb = checkCase(this->negative, divisor.negative);
@@ -358,7 +367,7 @@ template <class type> LargeInt<type> LargeInt<type>::operator%( LargeInt<type> &
 }
 
 /* Equal */
-template <class type> bool LargeInt<type>::operator==( LargeInt<type> &other){
+ bool LargeInt::operator==( LargeInt &other){
     bool equal = true;
     
     if(list.get_length() == other.list.get_length()) {
@@ -381,7 +390,7 @@ template <class type> bool LargeInt<type>::operator==( LargeInt<type> &other){
 }
 
 /* Less */
-template <class type> bool LargeInt<type>::operator<( LargeInt<type> &other) {
+ bool LargeInt::operator<( LargeInt &other) {
 
     bool less = true;
 
@@ -429,7 +438,7 @@ template <class type> bool LargeInt<type>::operator<( LargeInt<type> &other) {
 }
 
 /* Bigger */
-template <class type> bool LargeInt<type>::operator>( LargeInt<type> &other) {
+ bool LargeInt::operator>( LargeInt &other) {
 
     bool bigger = true;
 
@@ -485,7 +494,7 @@ template <class type> bool LargeInt<type>::operator>( LargeInt<type> &other) {
 }
 
 /* Less or Equal */
-template <class type> bool LargeInt<type>::operator>=( LargeInt<type> &other) {
+ bool LargeInt::operator>=( LargeInt &other) {
     bool bigger_equal = false;
 
     if( *this > other || *this == other)
@@ -495,7 +504,7 @@ template <class type> bool LargeInt<type>::operator>=( LargeInt<type> &other) {
 }
 
 /* Bigger or Equal */
-template <class type> bool LargeInt<type>::operator<=( LargeInt<type> &other) {
+ bool LargeInt::operator<=( LargeInt &other) {
     bool less_equal = false;
 
     if( *this < other || *this == other)
