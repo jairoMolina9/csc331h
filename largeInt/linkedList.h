@@ -1,53 +1,86 @@
-#ifndef LINKEDLIST_H
+/*
+   Jairo Molina
+   molinaandres9991@gmail.com
+   CSC 331H. Prof Salvatti
+   LargeInt Project
+   "largeInt.h"
+   --------------------------------------------
+               <In this File>
+   You will find the overloaded functions to
+   compute arithmetic expressions using LargeInt
+   objects
+   --------------------------------------------
+*/
 
-#define LINKEDLIST_H
+#ifndef LARGEINT_H
+#define LARGEINT_H
 
-#include <iostream>
-using namespace std;
-
-template <class type> struct Node {
-
-  type value;
-  Node *next;
-  Node *back;
-};
-
-template <class type> class List {
+#include "linkedList.cpp"
+#include <string>
+class LargeInt {
 private:
-  Node<type> *head;
-  Node<type> *tail;
-  int length;
-
-  void copyAll(const List &);
-  void removeAll();
-  
+  string numbers;
+  List<int> list;
+  bool negative;
+  typename List<int>::Iterator iter;
 public:
-  List();
-  ~List();
-  List(const List<type> &);
-  List<type> &operator=(const List<type> &);
+    
+ LargeInt();
 
-  void insert_front(type);
-  void insert_back(type);
-  void deleteFromFront();
-  
-  void printFromFront();
-  void printFromBack();
-  void printEdges();
-  
-  bool isEmpty();
-  bool delete_item(type);
-  bool search(type);
-  int get_length() const;
+friend istream &operator>>( istream  &input, LargeInt &A ) {
+    input >> A.numbers;
+    if(A.numbers[0] == '-'){
+        A.numbers.erase(0,1);
+        A.negative = true;
+    }
+    A.setNodes();
+    return input;
+}
 
-  // Implementation in .cpp
-  class Iterator;
-  
-  Iterator begin(void) { return Iterator(head); }
-
-  Iterator end(void) {
-      return Iterator(tail);
+friend ostream &operator<<( ostream  &output, LargeInt &A ) { //output the function
+    if(A.negative)
+    {
+        output << "\tResult: -";
+    } else {
+        output << "\tResult: ";
+    }
+    A.list.printFromFront();
+    return output;
   }
+
+bool checkZero(LargeInt,LargeInt);
+
+void setNodes();
+
+int checkCase(bool, bool);
+
+/* RETURN largeint OBJECT with RESULT*/
+LargeInt operator+( LargeInt &);
+
+LargeInt operator-( LargeInt &);
+
+LargeInt operator*( LargeInt &);
+
+LargeInt operator/( LargeInt &);
+
+LargeInt operator%( LargeInt &);
+
+/* GETS RIDS OFF EXTRA ZEROS */
+void cleanResult(LargeInt&);
+
+/* RETURN bool OUTPUT */
+bool operator!=(LargeInt &);
+
+bool operator==( LargeInt &);
+
+bool operator<(LargeInt &);
+
+bool operator>(LargeInt &);
+
+bool operator>=(LargeInt &);
+
+bool operator<=(LargeInt &);
 };
 
-#endif /* LINKEDLIST_H */
+
+#endif /* LARGEINT_H */
