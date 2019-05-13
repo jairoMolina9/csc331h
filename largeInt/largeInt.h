@@ -17,16 +17,17 @@
 
 #include "linkedList.cpp"
 #include <string>
-template <class type> class LargeInt {
+class LargeInt {
 private:
   string numbers;
-  List<type> list;
+  List<int> list;
   bool negative;
-  typename List<type>::Iterator iter;
+  typename List<int>::Iterator iter;
 public:
+    
  LargeInt();
 
-friend istream &operator>>( istream  &input, LargeInt<type> &A ) {
+friend istream &operator>>( istream  &input, LargeInt &A ) {
     input >> A.numbers;
     if(A.numbers[0] == '-'){
         A.numbers.erase(0,1);
@@ -52,31 +53,31 @@ void setNodes();
 int checkCase(bool, bool);
 
 /* RETURN largeint OBJECT with RESULT*/
-LargeInt<type> operator+( LargeInt<type> &);
+LargeInt operator+( LargeInt &);
 
-LargeInt<type> operator-( LargeInt<type> &);
+LargeInt operator-( LargeInt &);
 
-LargeInt<type> operator*( LargeInt<type> &);
+LargeInt operator*( LargeInt &);
 
-LargeInt<type> operator/( LargeInt<type> &);
+LargeInt operator/( LargeInt &);
 
-LargeInt<type> operator%( LargeInt<type> &);
+LargeInt operator%( LargeInt &);
 
 /* GETS RIDS OFF EXTRA ZEROS */
-void cleanResult(LargeInt<type>&);
+void cleanResult(LargeInt&);
 
 /* RETURN bool OUTPUT */
-bool operator!=(LargeInt<type> &);
+bool operator!=(LargeInt &);
 
-bool operator==( LargeInt<type> &);
+bool operator==( LargeInt &);
 
-bool operator<(LargeInt<type> &);
+bool operator<(LargeInt &);
 
-bool operator>(LargeInt<type> &);
+bool operator>(LargeInt &);
 
-bool operator>=(LargeInt<type> &);
+bool operator>=(LargeInt &);
 
-bool operator<=(LargeInt<type> &);
+bool operator<=(LargeInt &);
 };
 
 
