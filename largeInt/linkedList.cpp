@@ -3,535 +3,340 @@
    molinaandres9991@gmail.com
    CSC 331H. Prof Salvatti
    LargeInt Project
-   "largeInt.cpp"
+   "linkedList.cpp"
    --------------------------------------------
                <In this File>
    I implement the following functions:
-   - Read String to Nodes
-   - Print From Front
-   - Overload operator +
-   - Overload operator -
-   - Overload operator *
-   - Overload operator /
-   - Overload operator %
- *
+   - Insert Front & Back
+   - Print Front, Back, Edges
+   - Search and Delete
+   - Remove all, Copy all
+   - Constructors, Operator= Overloaded
+   - is_Empty, get_Length
+   and the Iterator class implemantion:
+   - Operator++, --, *, !=, ==
    --------------------------------------------
 */
 
-#include "largeInt.h"
+#include "linkedList.h"
 
-/* Default Constructor */
- LargeInt::LargeInt() {
-  numbers = "";
-  iter = nullptr;
-  negative = false;
+/* Default List Constructor */
+template <class type> List<type>::List() {
+  head = nullptr;
+  tail = nullptr;
+  length = 0;
 }
 
-/* Check if dividing by zero */
- bool LargeInt::checkZero(LargeInt A,LargeInt B){
-    bool zero = false;
-    if(A.list.get_length() == 1){
-        typename List<int>::Iterator iter = A.list.begin();
-        if(*iter == 0)
-            zero = true;
-    }
-    if(B.list.get_length() == 1) {
-        typename List<int>::Iterator iter = B.list.begin();
-        if(*iter == 0)
-            zero = true;
-    }
-    return zero;
+/* Destructor */
+template <class type> List<type>::~List() {
+  /*To successfuly erase a list, all the nodes must be deallocated*/
+  removeAll();
+ // cout << "Destructor called, List deleted" << endl; // useful for debugging
 }
 
-/* Set string to individual nodes */
- void LargeInt::setNodes() {
-  for (int i = 0; i < numbers.length(); i++) {
-    list.insert_back(numbers[i] - '0');
+/* This is a copy constructor that receives an object as parameter */
+template <class type> List<type>::List(const List<type> &other) {
+  copyAll(other);
+}
+
+/* Overloaded assignment operator, similar to copy constructor */
+template <class type>
+List<type> &List<type>::operator=(const List<type> &other) {
+  if (head == other.head) { // some clients may try to assign two equal objects
+    cerr << "They are the same" << endl;
+  } else {
+    /*Main difference between the copy constructor and the
+      operator= function is that in this case we must deallocate
+      any existing Nodes before copying all
+    */
+    removeAll();
+    copyAll(other);
   }
-  iter = list.end(); // automatically sets iterator ready to calculate
+  return *this; // returns the left hand object
 }
 
-/* Check negative case */
- int LargeInt::checkCase(bool negA, bool negB){
-    int case_numb = 0;
-    
-    /*
-      Check sign
-      Case 1: ( + ) ( - )
-      Case 2: ( - ) ( + )
-      Case 3: ( - ) ( - )
-    */
-    
-    if(!negA && negB) 
-        case_numb = 1;
+/* Performs deep copy between two objects */
+template <class type> void List<type>::copyAll(const List &other) {
+  if (other.get_length() == 0) {
+    head = tail = nullptr;
+    length = 0;
+  } else {
+    length = other.length; // no need to increment length
+    head = new Node<type>;
+    head->value = other.head->value;
+    head->back = nullptr;
+    head->next = nullptr;
+    /*The use of two pointers is for efficiency*/
+    Node<type> *other_walker = other.head->next;
+    Node<type> *this_walker = head;
+    while (other_walker != nullptr) {
+      this_walker->next = new Node<type>;
+      this_walker->next->value = other_walker->value;
+      this_walker->next->next = nullptr;
+      this_walker->next->back = this_walker;
 
-   if(negA && !negB)
-        case_numb = 2;
-
-    if(negA && negB)
-        case_numb = 3;
-
-    return case_numb;
-}
-
-/* Gets Rids of zeros*/
- void LargeInt::cleanResult( LargeInt &result){
-    result.iter = result.list.begin();
-
-    if(result.list.get_length() > 1) {
-    while(*(result.iter) == 0 ){
-        result.list.deleteFromFront();
-        ++(result.iter);
+      this_walker = this_walker->next;
+      other_walker = other_walker->next;
     }
-    if(*(result.iter) == 0)
-        result.list.deleteFromFront(); //deletes last zero
-    }
+    tail = this_walker; // let tail pointer be the last node
+  }
 }
 
-/* Addition */
- LargeInt LargeInt::operator+( LargeInt &addend_2) {
-    iter = list.end();
-    addend_2.iter = addend_2.list.end();
+/* Inserts value into the front of list */
+template <class type> void List<type>::insert_front(type info) {
+  if (isEmpty()) { // if is empty create head node
+    head = new Node<type>;
+    head->back = nullptr;
+    head->next = nullptr;
+    head->value = info;
+    tail = head; // only one node thus tail and head point at same place
+    length++;    // increase length by one
+  } else {
+    Node<type> *new_Node = new Node<type>;
+    new_Node->value = info;
+    new_Node->back = nullptr;
+    new_Node->next = head;
+    head->back = new_Node;
+
+    head = new_Node; // sets current head to new node
+    length++;        // increase length by one
+  }
+
+  //cout << "Value inserted into Node[1]" << endl;
+}
+
+/* Inserts value into the back of list */
+template <class type> void List<type>::insert_back(type info) {
+  if (isEmpty()) {
+    head = new Node<type>;
+    head->back = nullptr;
+    head->next = nullptr;
+    head->value = info;
+    tail = head; // only one node thus tail and head point at same place
+    length++;    // increase length by one
+  } else {
+    Node<type> *new_Node = new Node<type>;
+    new_Node->value = info;
+    new_Node->back = tail;
+    new_Node->next = nullptr;
+    tail->next = new_Node;
+
+    tail = new_Node; // sets current tail to new node
+    length++;        // increase length by one
+  }
+
+ // cout << "Value inserted into Node[" << length << "]\n" << endl;
+}
+
+/* Deletes front value */
+template <class type> void List<type>::deleteFromFront(){
+    Node<type> *dummy;
     
-    LargeInt sum;
-    LargeInt addend_1 = *this;
-    
-    int case_numb = checkCase(this->negative, addend_2.negative);
-    
-    /*
-      Check sign
-      Case 1: ( + ) ( - )
-      Case 2: ( - ) ( + )
-      Case 3: ( - ) ( - )
-    */
-    
-    if(case_numb == 1){
-        addend_2.negative = false;
-        sum = addend_1 - addend_2;
-    
-    } else if ( case_numb == 2) {
-        
-        if(*this == addend_2){
-            sum.list.insert_front(0);
-            return sum;
-        }
-        
-        addend_1.negative = false;
-        sum = addend_2 - addend_1;
-        
-        if(addend_1 <= addend_2){
-            sum.negative = false;
-        } else {
-            sum.negative = true;
-        }
-    
-    } else if ( case_numb == 3){
-        addend_2.negative = false;
-        sum = addend_1 - addend_2;
-    
+    if(isEmpty()){
+        cout << "List is empty, nothing to delete" << endl;
+    } else if (length == 1) {
+        head = tail = nullptr;
+        //cout << "List is empty" << endl;
+        length--;
     } else {
-        
-        int result = 0;
-        int carry = 0;
-        
-        while(iter != nullptr || addend_2.iter != nullptr){
-            
-            /*
-              adding nodes
-              case 1: ONLY check RIGHT list
-              case 2: ONLY check LET list
-              case 3: CHECK both lists
-            */
-            
-            if(addend_2.iter == nullptr){
-                result = (*iter + carry);
-                --iter; //move right list iterator
-            
-            } else if(iter == nullptr) {
-                result = *(addend_2.iter) + carry;
-                --(addend_2.iter); //move left list iterator
-            
-            } else{
-                result = (*(addend_2.iter) + *iter) + carry;
-                --iter;
-                --(addend_2.iter);
-            }
-            
-            /*
-              addition results
-              case 1: result is double digit
-              case 2: result is single digit
-            */
-            
-            if(result > 9){
-                carry = 1;//always 1, max is 9+9 = '1''8'
-                sum.list.insert_front(result-10);//insert single digit
-            
-            } else {
-                carry = 0;
-                sum.list.insert_front(result);
-            }
-        }
-        
-        if(carry == 1){
-            //if both are not negative
-            if(!this->negative && !addend_2.negative){
-                sum.list.insert_front(1); //inserts 1 in front
-            }
-        }
+        dummy = head;
+        head = head->next;
+        head->back = nullptr;
+        --length;
+        delete dummy;
     }
-    return sum;
 }
 
-/* Subtract */
- LargeInt LargeInt::operator-( LargeInt &subtrahend) {
-    LargeInt difference;
-    LargeInt minuend = *this;
-    
-    int case_numb = checkCase(this->negative, subtrahend.negative);
-    
-    /*
-      Check sign
-      Case 1: ( + ) ( - )
-      Case 2: ( - ) ( + )
-      Case 3: ( - ) ( - )
-    */
-    
-    if(case_numb == 1){
-        subtrahend.negative = false;
-        difference = minuend + subtrahend;
-    } else if ( case_numb == 2) {
-        minuend.negative = false;
-        difference = minuend + subtrahend;
-        difference.negative = true;
-    } else if ( case_numb == 3){
-        subtrahend.negative = false;
-        difference = minuend + subtrahend;
+/* Removes every node front->back in a list */
+template <class type> void List<type>::removeAll() {
+  Node<type> *walker;
+
+  while (head != nullptr) {
+    walker = head;
+    head = head->next;
+    delete walker;
+  }
+  tail = nullptr;
+  length = 0;
+}
+
+/* Prints from front->back */
+template <class type> void List<type>::printFromFront() {
+  if (isEmpty()) {
+    cerr << "The list is empty" << endl;
+    return;
+  }
+  
+  for (Node<type> *ptr = head; ptr != nullptr; ptr = ptr->next) {
+    cout << ptr->value;
+  }
+  cout << endl;
+}
+
+/* Prints from back->front */
+template <class type> void List<type>::printFromBack() {
+  if (isEmpty()) {
+    cerr << "The list is empty" << endl;
+    return;
+  }
+  int counter = length; // used as a dummy var
+  for (Node<type> *ptr = tail; ptr != nullptr; ptr = ptr->back) {
+    cout << "NODE [" << counter-- << "] -> ";
+    cout << ptr->value << endl;
+  }
+}
+
+/*Prints the value of the current head and tail pointer*/
+template <class type> void List<type>::printEdges() {
+  if (isEmpty()) {
+    cerr << "The list is empty" << endl;
+    return;
+  }
+  cout << "The HEAD value ";
+  cout << "[ " << head->value << " ]" << endl;
+  cout << "The TAIL value ";
+  cout << "[ " << tail->value << " ]" << endl;
+}
+
+/* Checks if list is empty */
+template <class type> bool List<type>::isEmpty() { return (length == 0); }
+
+/* Deletes item , returns flag */
+template <class type> bool List<type>::delete_item(type item) {
+  Node<type> *dummy;    // dummy pointer used to delete value
+  bool deleted = false; // flag
+
+  if (isEmpty()) { // if the list is empty
+    cout << "List is empty, nothing to delete" << endl;
+    deleted = true;
+} else if (length == 1){
+   head = tail = nullptr;
+   cout << "List is empty" << endl;
+   length--;
+}else if (head->value == item) { // if the item is found in the first node
+    dummy = head;
+    head = head->next;
+    head->back = nullptr;
+    delete dummy;
+
+    cout << "\nItem deleted at Node[1]" << endl;
+    cout << "Length updated: " << --length << endl;
+
+    deleted = true;
+
+  } else if (tail->value == item) { // if the item is found in the last node
+    dummy = tail;
+    tail = dummy->back;
+    tail->next = nullptr;
+    delete dummy;
+
+    cout << "Item deleted at Node[" << length-- << "]"
+         << endl; // postfix decrement
+    cout << "Length updated: " << get_length() << endl;
+
+    deleted = true;
+  } else { // traverse the list
+    Node<type> *walker = head;
+    int counter = 1; // used to know which # node was deleted
+    while (walker != nullptr) {
+      if (walker->value == item) { // walker pointer finds the item
+        dummy = walker;
+        walker->back->next = dummy->next;
+        dummy->next->back = walker->back;
+        delete dummy;
+
+        length--; // decrement length
+        cout << "Item deleted at Node[" << counter << "]" << endl;
+        cout << "Length updated: " << get_length() << endl;
+
+        deleted = true;
+        break;
+      } else {
+        walker = walker->next;
+        counter++;
+      }
+    }
+  }
+  return deleted; // returns flag
+}
+
+/* Searches for an item , returns item */
+template <class type> bool List<type>::search(type item) {
+  bool check = false; // flag
+
+  if (isEmpty()) { // if the list is empty
+    cout << "List is empty, nothing to delete" << endl;
+    check = true;
+  } else if (head->value == item) { // if item found in first node
+    cout << "Item found at Node[1]" << endl;
+    check = true;
+  } else if (tail->value == item) { // if item found in last node
+    cout << "Item found at Node[" << get_length() << "]" << endl;
+    check = true;
+  } else { // traverse the list
+
+    Node<type> *walker = head;
+    int counter = 1; // used to know which # node was found
+    while (walker != nullptr) {
+      if (walker->value == item) { // walker finds item
+        cout << "Item found at Node[" << counter << "]" << endl;
+        check = true;
+        break;
+      }
+      walker = walker->next;
+      counter++;
+    }
+  }
+  return check; // returns flag
+}
+
+/* Returns the current length of a list */
+template <class type> int List<type>::get_length() const { return length; }
+
+/* ITERATOR CLASS IMPLEMENTATION */
+template <class type>
+ class List<type>::Iterator {
+private:
+  Node<type> *iter; //pointer to a node
+
+public:
+  Iterator() : iter(nullptr) {}
+  Iterator(Node<type> *ptr) : iter(ptr) {};
+
+//Moves iterator forward
+  Iterator operator++() {
+    if (iter != nullptr) {
+      iter = iter->next;
+    }
+    return iter;
+  }
+
+  //Shows the value of iterator
+  const type operator*() const {
+    type value;
+    if (iter != nullptr) {
+      value = iter->value;
     } else {
-        
-        int diff = 0; //difference between two single digits
-        int carry = 0;
-        int exp = 0; //adds 10 to minuend if needed
-        bool neg = false;
-        
-        //Checks if output will be negative
-        if( subtrahend > *this)
-            neg = true;
-        
-        /*
-          Compute subtraction
-          Case 1: Negative Subtraction
-          Case 2: Normal Subtraction
-        */
-        if(neg){
-            difference = subtrahend - *this;
-            difference.negative = true;
-        
-        } else {
-            
-            while(iter != nullptr || subtrahend.iter != nullptr){
-                
-                /*
-                  Compute subtraction
-                  Case 1: Carry is set and both digit are equal
-                  Case 2: RIGHT digit >= LEFT digit
-                  Case 3: RIGHT digit < LEFT digit
-                 */
-                if (carry == 1 && (*iter == *(subtrahend.iter)) ){
-                    diff = 9;
-                    carry = 1;
-                
-                }else if(*iter >= *(subtrahend.iter)) {
-                    exp = 0;
-                    diff = ((*iter - carry) + exp) - *(subtrahend.iter);
-                    carry = 0;
-                
-                } else if (*iter < *(subtrahend.iter)){
-                    exp = 10;
-                    diff = ((*iter - carry) + exp) - *(subtrahend.iter);
-                    carry = 1;
-                }
-                
-                difference.list.insert_front(diff);
-                
-                /*
-                  Move iterators
-                  Case 1: ONLY move RIGHT iterator
-                  Case 2: ONLY move LEFT iterator
-                  Case 3: BOTH iterators move
-               */
-                if(iter == nullptr){
-                    --(subtrahend.iter);
-                } else if ((subtrahend.iter) == nullptr) {
-                    --iter;
-                } else {
-                    --iter;
-                    --(subtrahend.iter);
-                }
-            }
-        }
+        value = 0;
     }
-    
-    cleanResult(difference);
-    return difference;
-}
+    return value; //return current iterator value
+  }
 
-/* Multiply */
- LargeInt LargeInt::operator*( LargeInt &multiplier) {
-    
-    LargeInt product = *this;
-    
-    LargeInt counter;
-    counter.list.insert_front(2);//default start at 2
-
-    LargeInt dummy; //used to add 1 to counter
-    dummy.list.insert_front(1);
-
-    int case_numb = checkCase(this->negative, multiplier.negative);
-
-    /* set negative signs to false, easier computation*/
-    product.negative = false;
-    counter.negative = false;
-    negative = false;
-    multiplier.negative = false;
-
-    while(counter < multiplier){
-
-        counter = counter + dummy;
-
-        product = product + *this;
-        //cout << product;
+//Moves iterator backward
+  Iterator operator--() {
+    if (iter != nullptr) {
+      iter = iter->back;
     }
+    return iter;
+  }
 
-    /*
-      Check sign
-      Case 1: ( - ) * ( + ) = - 
-      Case 2: ( + ) * ( - ) = -
-    */
-    if(case_numb == 2 || case_numb == 1)
-        product.negative = true;
+//Checks if two iterators are not equal
+  bool operator!=(const Iterator & other){
+     return iter!=other.iter;
+ }
 
-    return product;
+ //Checks if two iterators are equal
+ bool operator==(const Iterator & other){
+    return iter==other.iter;
 }
-
-/* Divide */
- LargeInt LargeInt::operator/( LargeInt &divisor) {
-    
-    LargeInt remainder = *this;
-    LargeInt quotient;
-    
-    bool zero = checkZero(remainder, divisor);
-    if(zero){
-        quotient.list.insert_front(0);
-        cout << "Cannot divide by 0" << endl;
-        return quotient;
-    }
-
-    LargeInt dummy;//used to add 1 to quotient
-    dummy.list.insert_front(1);
-
-    int case_numb = checkCase(this->negative, divisor.negative);
-
-    /* set negative signs to false, easier computation*/
-    remainder.negative = false;
-    divisor.negative = false;
-
-    if(remainder == divisor){
-       quotient.list.insert_front(1);
-    } else {
-        
-        while(remainder > divisor){
-            remainder = remainder - divisor;
-            quotient = quotient + dummy;
-        }
-    }
-    
-    /*
-      Check sign
-      Case 1: ( - ) % ( + ) = -
-      Case 2: ( + ) % ( - ) = - 
-    */
-    if(case_numb == 1 || case_numb == 2)
-        quotient.negative = true;
-    
-    return quotient;
-}
-
-/* Modolus */
- LargeInt LargeInt::operator%( LargeInt &divisor) {
-
-   LargeInt remainder = *this;
-
-   LargeInt dummy;
-   dummy.list.insert_front(1);
-
-   int case_numb = checkCase(this->negative, divisor.negative);
-
-   /* set negative signs to false, easier computation*/
-   remainder.negative = false;
-   divisor.negative = false;
-
-   while(remainder > divisor){
-
-      remainder = remainder - divisor;
-
-   }
-   
-    /*
-      Check sign
-      Case 1: ( - ) % ( + ) = -
-      Case 2: ( + ) % ( - ) = - 
-    */
-   if(case_numb == 1 || case_numb == 2)
-      remainder.negative = true;
-
-   return remainder;
-
-}
-
-/* Equal */
- bool LargeInt::operator==( LargeInt &other){
-    bool equal = true;
-    
-    if(list.get_length() == other.list.get_length()) {
-        
-        while(iter != nullptr ) {
-            
-            if( *iter != *(other.iter) ) {
-                equal = false;
-                return equal;
-            }
-            --iter;
-            --(other.iter);
-        }
-    
-    } else {
-        equal = false;
-    }
-    
-    return equal;
-}
-
-/* Less */
- bool LargeInt::operator<( LargeInt &other) {
-
-    bool less = true;
-
-    int case_numb = checkCase(this->negative, other.negative);
-
-    if(case_numb == 1){
-        less = false;
-    
-    } else if(case_numb == 2){
-        //do nothing
-    
-    } else {
-        
-        if(this->list.get_length() < other.list.get_length() ){
-           less = true;
-        } else if (this->list.get_length() > other.list.get_length()) {
-           less = false;
-        } else {
-            
-            iter = list.begin();
-            other.iter = other.list.begin();
-            
-            for(int i = 0; i < list.get_length(); i++){
-                
-                if( *iter < *(other.iter)){
-                    less = true;
-                    break;
-                } else if ( *iter == *(other.iter)){
-                    less = true;
-                } else if( *iter > *(other.iter )) {
-                    less = false;
-                    break;
-                }
-                
-                ++iter;
-                ++(other.iter);
-            }
-        }
-    }
-    
-    iter = list.end();
-    other.iter = other.list.end();
-   
-    return less;
-}
-
-/* Bigger */
- bool LargeInt::operator>( LargeInt &other) {
-
-    bool bigger = true;
-
-    int case_numb = checkCase(this->negative, other.negative);
-
-    if(case_numb == 1){
-        //do nothing
-    
-    } else if(case_numb == 2){
-        bigger = false;
-    
-    } else {
-        
-        if(this->list.get_length() < other.list.get_length() ){
-            bigger = false;
-        
-        } else if (this->list.get_length() > other.list.get_length()) {
-            bigger = true;
-        
-        } else if ( *this == other ){
-            bigger = false;
-        
-        }else {
-            
-            iter = list.begin();
-            other.iter = other.list.begin();
-            
-            while(iter != nullptr ){
-                
-                if(*iter == *(other.iter) ){
-                    
-                    bigger = true;
-                
-                } else if(*iter < *(other.iter)){
-                    bigger = false;
-                    break;
-                
-                } else if ( *iter > *(other.iter)) {
-                    bigger= true;
-                    break;
-                }
-                
-                ++iter;
-                ++(other.iter);
-            }
-        }
-    }
-    
-    iter = list.end();
-    other.iter = other.list.end();
-
-    return bigger;
-}
-
-/* Less or Equal */
- bool LargeInt::operator>=( LargeInt &other) {
-    bool bigger_equal = false;
-
-    if( *this > other || *this == other)
-        bigger_equal = true;
-
-    return bigger_equal;
-}
-
-/* Bigger or Equal */
- bool LargeInt::operator<=( LargeInt &other) {
-    bool less_equal = false;
-
-    if( *this < other || *this == other)
-        less_equal = true;
-
-    return less_equal;
-}
+};
